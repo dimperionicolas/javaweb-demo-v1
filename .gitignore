@@ -1,0 +1,65 @@
+# Ignora archivos específicos del IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+.vscode/
+*.swp
+*.swo
+
+# Ignora archivos de compilación y generados
+/target/
+/bin/
+/build/
+/out/
+/dist/
+*.class
+*.jar
+*.war
+*.ear
+
+# Ignora archivos de Maven
+**/pom.xml.versionsBackup
+**/pom.xml.next
+**/release.properties
+**/dependency-reduced-pom.xml
+**/mvnw
+**/mvnw.cmd
+**/.mvn/
+
+# Ignora archivos de logs y temporales
+*.log
+*.tmp
+*.bak
+*.orig
+*.rej
+*.swp
+*.swo
+
+# Ignora archivos de configuración local
+*.properties
+*.cfg
+*.config
+
+# Ignora archivos de base de datos (si usas H2, SQLite, etc.)
+*.db
+*.h2.db
+*.sqlite
+
+# Ignora archivos de Node.js (si usas herramientas frontend)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Ignora archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+src/main/webapp/css/
+src/main/webapp/img/
+src/main/webapp/js/
+src/main/webapp/vendor/
+src/main/webapp/scss/
