@@ -5,14 +5,18 @@
 <%@include file="components/editupdatestart.jsp"%>
 
 <div class="text-center">
-	<h1 class="h4 text-gray-900 mb-4">Alta odontólogo</h1>
+	<h1 class="h4 text-gray-900 mb-4">Detalle odontólogo</h1>
 </div>
 
 <form class="user" action="odontologo" method="POST">
 	<div class="form-group row">
 		<div class="col-sm-6 mb-3 mb-sm-0">
-			<input type="number" class="form-control form-control-user" id="dni"
-				placeholder="DNI" name="dni">
+			<input type="text" class="form-control form-control-user" id="dni"
+				placeholder="DNI" name="dni" value="aaaaaaaaaaaaaaaaaaaaaaaa">
+		</div>
+		<div class="col-sm-6">
+			<input type="text" class="form-control form-control-user"
+				id="usuario" name="usuario" placeholder="Usuario">
 		</div>
 	</div>
 	<div class="form-group row">
@@ -39,23 +43,18 @@
 	</div>
 	<div class="form-group row">
 		<div class="col-sm-6 mb-3 mb-sm-0">
-			<input type="date"  class="form-control form-control-user"
+			<input type="text" class="form-control form-control-user"
 				id="fechanac"name="fechanac" placeholder="Fecha nacimiento">
 		</div>
 	</div>
 	<div class="form-group">
-		<input type="text" class="form-control form-control-user"
+		<input type="email" class="form-control form-control-user"
 			id="especialidad"name="especialidad" placeholder="Especialidad">
 	</div>
 	<div class="form-group">
-		<input type="text" class="form-control form-control-user"
-			id="horario"name="hora_inicio" placeholder="Inicio del horario laboral">
+		<input type="email" class="form-control form-control-user"
+			id="horario"name="horario" placeholder="horario">
 	</div>
-		<div class="form-group">
-		<input type="text" class="form-control form-control-user"
-			id="horario"name="hora_fin" placeholder="Fin del horario labora">
-	</div>
-	
 
 	<button type="submit" class="btn btn-primary btn-user btn-block">
 		Cargar odontólogo</button>

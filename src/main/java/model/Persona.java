@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,15 +24,24 @@ public class Persona {
 	private String telefono;
 	private String direccion;
 	@Temporal(TemporalType.DATE)
-	private Date fecha_nac;
+	private LocalDate fecha_nac;
 
 	public Persona() {
 		super();
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public Persona(int id_persona, String dni, String nombre, String apellido, String telefono, String direccion,
-			Date fecha_nac) {
+			LocalDate fecha_nac) {
 		super();
+		this.id = id_persona;
 		this.dni = dni;
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -81,12 +90,12 @@ public class Persona {
 		this.direccion = direccion;
 	}
 
-	public Date getFecha_nac() {
+	public LocalDate getFecha_nac() {
 		return fecha_nac;
 	}
 
-	public void setFecha_nac(Date fecha_nac) {
-		this.fecha_nac = fecha_nac;
+	public void setFecha_nac(LocalDate fecha) {
+		this.fecha_nac = fecha;
 	}
 
 }

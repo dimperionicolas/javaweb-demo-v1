@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 
 		UsuarioDTO loggedUser = controller.validateLogin(username, password);
 		if (loggedUser != null) {
-			HttpSession session = request.getSession(true);
+			HttpSession session = request.getSession();
 			session.setAttribute("loggedUser", loggedUser);
 			response.sendRedirect("index.jsp");
 		} else {

@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
@@ -17,7 +17,7 @@ public class Secretario extends Persona {
 	}
 
 	public Secretario(int id_persona, String dni, String nombre, String apellido, String telefono, String direccion,
-			Date fecha_nac, String sector, Usuario usuario) {
+			LocalDate fecha_nac, String sector, Usuario usuario) {
 		super(id_persona, dni, nombre, apellido, telefono, direccion, fecha_nac);
 		this.sector = sector;
 		this.usuario = usuario;

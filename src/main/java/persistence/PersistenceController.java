@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DTO.UsuarioDTO;
+import model.Odontologo;
 import model.Usuario;
 
 public class PersistenceController {
-//	HorarioJPAController horaJPA = new HorarioJPAController();
-//	OdontologoJPAController odonJPA = new OdontologoJPAController();
+	HorarioJPAController horaJPA = new HorarioJPAController();
 //	PacienteJPAController paciJPA = new PacienteJPAController();
 //	PersonaJPAController persJPA = new PersonaJPAController();
 //	ResponsableJPAController respJPA = new ResponsableJPAController();
 //	SecretarioJPAController secrJPA = new SecretarioJPAController();
 //	TurnoJPAController turnJPA = new TurnoJPAController();
+	OdontologoJPAController odonJPA = new OdontologoJPAController();
 	UsuarioJPAController userJPA = new UsuarioJPAController();
 
 	public PersistenceController() {
@@ -50,6 +51,42 @@ public class PersistenceController {
 
 	public boolean validateUser(String nombreUsuario, String contrasenia) {
 		return userJPA.validateUserAndPass(nombreUsuario, contrasenia);
+	}
+
+	// Odontologo
+	public List<Odontologo> getAllOdonto() {
+		return odonJPA.findAll(); // TODO devolver una lista refinada?
+	}
+
+	public void createOdontologo(Odontologo odontologo) {
+//		try {
+//			Horario horario = odontologo.getHorario();
+//			horaJPA.create(horario);
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//		}
+		odonJPA.create(odontologo);
+	}
+
+	public void deleteOdonto(int id_eliminar) {
+		// TODO delete horario where id_horario = odontologo.horario.id
+		odonJPA.delete(id_eliminar); // TODO se eliminaron sus horas?
+	}
+
+	public Odontologo findOdontoById(int id_editar) {
+		return odonJPA.findById(id_editar);
+	}
+
+	public void updateOdonto(Odontologo odontoToEdit) {
+		odonJPA.update(odontoToEdit);
+	}
+
+	public List<Odontologo> findOdontoByEspecialidad(String especialidad) {
+		return odonJPA.findByEspecialidad(especialidad);
+	}
+
+	public List<Odontologo> findOdontoByName(String name) {
+		return odonJPA.findByName(name);
 	}
 
 }

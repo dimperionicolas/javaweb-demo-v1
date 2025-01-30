@@ -101,4 +101,14 @@ class OdontologoJPAController {
 			em.close();
 		}
 	}
+
+	public List<Odontologo> findByName(String name) {
+		EntityManager em = emf.createEntityManager();
+		try {
+			return em.createQuery("SELECT o FROM Odontologo o WHERE o.nombre = :nombre", Odontologo.class)
+					.setParameter("nombre", name).getResultList();
+		} finally {
+			em.close();
+		}
+	}
 }

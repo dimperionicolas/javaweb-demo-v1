@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 
@@ -13,7 +13,7 @@ public class Responsable extends Persona {
 	}
 
 	public Responsable(int id_persona, String dni, String nombre, String apellido, String telefono, String direccion,
-			Date fecha_nac, String tipo_respo) {
+			LocalDate fecha_nac, String tipo_respo) {
 		super(id_persona, dni, nombre, apellido, telefono, direccion, fecha_nac);
 		this.tipo_respo = tipo_respo;
 	}

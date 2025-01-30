@@ -1,5 +1,11 @@
 <%@page import="DTO.UsuarioDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+UsuarioDTO loggedUserPS = (UsuarioDTO) request.getSession().getAttribute("loggedUser");
+if (loggedUserPS == null) {
+	response.sendRedirect("login.jsp");
+}
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,12 +30,6 @@
 <link href="vendor/datatables/dataTables.bootstrap4.min.css"
 	rel="stylesheet">
 </head>
-<%
-UsuarioDTO loggedUserPS = (UsuarioDTO) request.getSession().getAttribute("loggedUser");
-if (loggedUserPS == null) {
-	response.sendRedirect("login.jsp");
-}
-%>
 <body id="page-top">
 	<div id="wrapper">
 		<%@include file="sidebar.jsp"%>

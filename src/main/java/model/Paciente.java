@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -23,7 +23,7 @@ public class Paciente extends Persona {
 	}
 
 	public Paciente(int id_persona, String dni, String nombre, String apellido, String telefono, String direccion,
-			Date fecha_nac, boolean tiene_os, String tipo_sangre, Responsable responsable, List<Turno> turnos) {
+			LocalDate fecha_nac, boolean tiene_os, String tipo_sangre, Responsable responsable, List<Turno> turnos) {
 		super(id_persona, dni, nombre, apellido, telefono, direccion, fecha_nac);
 		this.tiene_os = tiene_os;
 		this.tipo_sangre = tipo_sangre;

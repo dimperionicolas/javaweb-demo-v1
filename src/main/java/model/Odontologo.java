@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -13,9 +13,9 @@ public class Odontologo extends Persona {
 	private String especialidad;
 	@OneToOne
 	private Usuario usuario;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Horario horario;
-	@OneToMany(mappedBy = "odontoRel",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "odontoRel", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Turno> listaTurnos;
 
 	public Odontologo() {
@@ -23,7 +23,7 @@ public class Odontologo extends Persona {
 	}
 
 	public Odontologo(int id_persona, String dni, String nombre, String apellido, String telefono, String direccion,
-			Date fecha_nac, String especialidad, List<Turno> turnos, Usuario usuario, Horario horario) {
+			LocalDate fecha_nac, String especialidad, List<Turno> turnos, Usuario usuario, Horario horario) {
 		super(id_persona, dni, nombre, apellido, telefono, direccion, fecha_nac);
 		this.especialidad = especialidad;
 		this.listaTurnos = turnos;

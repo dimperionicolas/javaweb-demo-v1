@@ -67,7 +67,7 @@ public class UsuarioServlet extends HttpServlet {
 
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int id_eliminar = Integer.parseInt(request.getParameter("id_eliminar"));
+		String id_eliminar = request.getParameter("id_eliminar");
 		controller.deleteUser(id_eliminar);
 		response.sendRedirect("usuariostodos.jsp");
 	}
@@ -75,7 +75,7 @@ public class UsuarioServlet extends HttpServlet {
 	protected void doPrepareForUpdate(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		int id_editar = Integer.parseInt(request.getParameter("id_editar"));
+		String id_editar = request.getParameter("id_editar");
 		Usuario userToEdit = controller.findUserById(id_editar);
 		userToEdit.setContrasenia("");
 		request.getSession().setAttribute("puedeEditar", true);
@@ -95,7 +95,6 @@ public class UsuarioServlet extends HttpServlet {
 
 	protected void doUpdate(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		Usuario userToEdit = (Usuario) request.getSession().getAttribute("userToEdit");
 		int id_editar = Integer.parseInt(request.getParameter("id_editar"));
 		boolean puedeEditar = (boolean) request.getSession().getAttribute("puedeEditar");
@@ -124,7 +123,7 @@ public class UsuarioServlet extends HttpServlet {
 		userToEdit.setRol(rol);
 
 		controller.updateUser(userToEdit);
-		response.sendRedirect("usuariostodos.jsp");
+		response.sendRedirect("usuario");
 
 	}
 
