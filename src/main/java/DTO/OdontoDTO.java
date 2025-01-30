@@ -1,17 +1,9 @@
 package DTO;
 
-import model.Usuario;
-
 public class OdontoDTO {
 	private int id;
 	private String nombre;
 	private String rol;
-
-	public OdontoDTO(Usuario usuario) {
-		this.id = usuario.getId_usuario();
-		this.nombre = usuario.getNombre_usuario();
-		this.rol = usuario.getRol();
-	}
 
 	public int getId() {
 		return id;

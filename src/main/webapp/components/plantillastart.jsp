@@ -7,8 +7,8 @@
 <body id="page-top">
 
 	<%
-	UsuarioDTO loggedUser = (UsuarioDTO) request.getSession().getAttribute("loggedUser");
-	if (loggedUser == null) {
+	UsuarioDTO loggedUserPS = (UsuarioDTO) request.getSession().getAttribute("loggedUser");
+	if (loggedUserPS == null) {
 		response.sendRedirect("login.jsp");
 	}
 	%>

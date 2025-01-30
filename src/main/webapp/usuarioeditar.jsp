@@ -13,7 +13,7 @@
 				<h1 class="h4 text-gray-900 mb-4">Editar usuario</h1>
 			</div>
 			<%
-			Usuario user = (Usuario) request.getSession().getAttribute("userToEdit");
+			Usuario userToEdit = (Usuario) request.getSession().getAttribute("userToEdit");
 			boolean puedeEditar = (boolean) request.getSession().getAttribute("puedeEditar");
 			%>
 
@@ -23,11 +23,11 @@
 						<input type="text" class="form-control form-control-user"
 							name="nombreusuario" id="nombreusuario"
 							placeholder="Nombre usuario"
-							value="<%=user.getNombre_usuario()%>">
+							value="<%=userToEdit.getNombre_usuario()%>">
 					</div>
 					<div class="col-sm-6">
 						<input type="text" class="form-control form-control-user"
-							name="rol" id="rol" placeholder="Rol" value="<%=user.getRol()%>">
+							name="rol" id="rol" placeholder="Rol" value="<%=userToEdit.getRol()%>">
 					</div>
 
 				</div>
@@ -38,7 +38,7 @@
 						<input type="password" class="form-control form-control-user"
 							name="password" id="password" 
 							<%if (puedeEditar) {%>
-							value="<%=user.getContrasenia()%>" <%} else {%>
+							value="<%=userToEdit.getContrasenia()%>" <%} else {%>
 							disabled="disabled" value="******" <%}%>
 							placeholder="Password">
 					</div>
@@ -46,13 +46,13 @@
 						<input type="password" class="form-control form-control-user"
 							name="repeatpassword" id="repeatpassword" 
 							<%if (puedeEditar) {%>
-							value="<%=user.getContrasenia()%>" <%} else {%>
+							value="<%=userToEdit.getContrasenia()%>" <%} else {%>
 							disabled="disabled" value="******" <%}%>
 							placeholder="Repetir Password">
 					</div>
 				</div>
 				<input type="hidden" name="_method" value="UPDATE"> <input
-					type="hidden" name="id_editar" value="<%=user.getId_usuario()%>">
+					type="hidden" name="id_editar" value="<%=userToEdit.getId_usuario()%>">
 				<button type="submit" class="btn btn-primary btn-user btn-block">
 					Guardar modificación</button>
 			</form>

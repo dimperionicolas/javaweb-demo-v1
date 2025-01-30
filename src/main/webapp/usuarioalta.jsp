@@ -4,10 +4,6 @@
 <div class="card o-hidden border-0 shadow-lg">
 	<div class="p-5">
 		<div class="container-fluid">
-
-
-
-
 			<div class="text-center">
 				<h1 class="h4 text-gray-900 mb-4">Alta usuario</h1>
 			</div>
@@ -36,13 +32,9 @@
 							placeholder="Repetir Password">
 					</div>
 				</div>
-
 				<button type="submit" class="btn btn-primary btn-user btn-block">
 					Crear usuario</button>
 			</form>
-
-
-
 			<hr>
 		</div>
 	</div>

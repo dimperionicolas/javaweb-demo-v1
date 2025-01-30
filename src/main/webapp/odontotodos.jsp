@@ -6,17 +6,10 @@
 <div class="card o-hidden border-0 shadow-lg">
 	<div class="p-5">
 		<div class="container-fluid">
-
-
-
-			<h1 class="h3 mb-2 text-gray-800">Lista de usuarios</h1>
-			<p class="mb-4">A continuación podrá visualizar la lista de
-				usuarios registrados.</p>
-
-			<!-- DataTales Example -->
+			<h1 class="h3 mb-2 text-gray-800">Lista de odontólogos</h1>
 			<div class="card shadow mb-4">
 				<div class="card-header py-3">
-					<h6 class="m-0 font-weight-bold text-primary">Usuarios</h6>
+					<h6 class="m-0 font-weight-bold text-primary">Odontólogos</h6>
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
@@ -38,15 +31,20 @@
 									<th>Accion</th>
 								</tr>
 							</tfoot>
+							
+							
+							
 							<tbody>
 								<%
-								List<OdontoDTO> odontoList = (List<OdontoDTO>) request.getSession().getAttribute("TODO");
-								for (OdontoDTO odonto : odontoList) {
+								List<OdontoDTO> odontoListOT = (List<OdontoDTO>) request.getSession().getAttribute("TODO");
+								for (OdontoDTO odontoOT : odontoListOT) {
 								%>
 								<tr>
-									<td><%=odonto.getId()%></td>
-									<td><%=odonto.getNombre()%></td>
-									<td><%=odonto.getRol()%></td>
+									<td><%= %></td>
+									<td><%= %></td>
+									<td><%= %></td>
+									
+									
 									<td style="display: flex;">
 										<form name="eliminar" action="usuario" method="POST">
 											<button type="submit"
@@ -55,7 +53,7 @@
 												<i class="fas fa-trash-alt"></i> Eliminar
 											</button>
 											<input type="hidden" name="_method" value="DELETE"> <input
-												type="hidden" name="id_eliminar" value="<%=odonto.getId()%>">
+												type="hidden" name="id_eliminar" value="<%= %>">
 											<!-- esto es para mandar el codigo al servlet -->
 										</form>
 										<form name="editar" action="usuario" method="POST">
@@ -66,7 +64,7 @@
 												<i class="fas fa-pencil-alt"></i> Editar
 											</button>
 											<input type="hidden" name="_method" value="PATCH"> <input
-												type="hidden" name="id_editar" value="<%=odonto.getId()%>">
+												type="hidden" name="id_editar" value="<%=odontoOT.getId()%>">
 											<!-- esto es para mandar el codigo al servlet -->
 										</form>
 									</td>
@@ -74,8 +72,10 @@
 								<%
 								}
 								%>
-
 							</tbody>
+							
+							
+							
 						</table>
 					</div>
 				</div>

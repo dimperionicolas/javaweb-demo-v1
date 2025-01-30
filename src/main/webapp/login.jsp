@@ -17,33 +17,28 @@
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
 </head>
 <body class="bg-gradient-primary">
+
 	<div class="container">
 		<div class="row justify-content-center ">
-			<div class="col-xl-8 col-lg-8 col-md-8">
-				<div class="card o-hidden border-0 shadow-lg my-5">
-					<div class="row justify-content-center">
-						<div class="col-lg-8">
-							<div class="p-5">
-								<div class="text-center">
-									<h1 class="h4 text-gray-900 mb-4">Bienvenido</h1>
-								</div>
-								<form class="user" action="login" method="POST">
-									<div class="form-group">
-										<input type="text" class="form-control form-control-user"
-											id="username" name="username"
-											placeholder="Ingrese su nombre de usuario">
-									</div>
-									<div class="form-group">
-										<input type="password" name="password"
-											class="form-control form-control-user" id="password"
-											placeholder="Contraseña">
-									</div>
-									<button type="submit"
-										class="btn btn-primary btn-user btn-block">Ingresar</button>
-								</form>
-							</div>
-						</div>
+			<div
+				class="card o-hidden border-0 shadow-lg my-5 col-xl-8 col-lg-8 col-md-8">
+				<div class="col-lg-8 p-5">
+					<div class="text-center">
+						<h1 class="h4 text-gray-900 mb-4">Bienvenido</h1>
 					</div>
+					<form class="user" action="login" method="POST">
+						<div class="form-group">
+							<input type="text" class="form-control form-control-user"
+								id="username" name="username"
+								placeholder="Ingrese su nombre de usuario">
+						</div>
+						<div class="form-group">
+							<input type="password" name="password"
+								class="form-control form-control-user" id="password"
+								placeholder="Contraseña">
+						</div>
+						<button type="submit" class="btn btn-primary btn-user btn-block">Ingresar</button>
+					</form>
 				</div>
 			</div>
 		</div>

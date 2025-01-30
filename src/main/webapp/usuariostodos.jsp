@@ -1,18 +1,12 @@
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="components/plantillastart.jsp"%>
-
 <div class="card o-hidden border-0 shadow-lg">
 	<div class="p-5">
 		<div class="container-fluid">
-
-
-
 			<h1 class="h3 mb-2 text-gray-800">Lista de usuarios</h1>
 			<p class="mb-4">A continuación podrá visualizar la lista de
 				usuarios registrados.</p>
-
-			<!-- DataTales Example -->
 			<div class="card shadow mb-4">
 				<div class="card-header py-3">
 					<h6 class="m-0 font-weight-bold text-primary">Usuarios</h6>
@@ -38,15 +32,15 @@
 								</tr>
 							</tfoot>
 							<tbody>
-								<%
-								List<UsuarioDTO> userList = (List<UsuarioDTO>) request.getSession().getAttribute("userList");
-								if (!userList.isEmpty()) {
-									for (UsuarioDTO user : userList) {
+								<% 
+								List<UsuarioDTO> userListUT = (List<UsuarioDTO>) request.getSession().getAttribute("userList");
+								if (!userListUT.isEmpty()) {
+									for (UsuarioDTO userUT  : userListUT) {
 								%>
 								<tr>
-									<td><%=user.getId()%></td>
-									<td><%=user.getNombre()%></td>
-									<td><%=user.getRol()%></td>
+									<td><%=userUT.getId()%></td>
+									<td><%=userUT.getNombre()%></td>
+									<td><%=userUT.getRol()%></td>
 									<td style="display: flex;">
 										<form name="eliminar" action="usuario" method="POST">
 											<button type="submit"
@@ -55,7 +49,7 @@
 												<i class="fas fa-trash-alt"></i> Eliminar
 											</button>
 											<input type="hidden" name="_method" value="DELETE"> <input
-												type="hidden" name="id_eliminar" value="<%=user.getId()%>">
+												type="hidden" name="id_eliminar" value="<%=userUT.getId()%>">
 											<!-- esto es para mandar el codigo al servlet -->
 										</form>
 										<form name="editar" action="usuario" method="POST">
@@ -66,22 +60,13 @@
 												<i class="fas fa-pencil-alt"></i> Editar
 											</button>
 											<input type="hidden" name="_method" value="PATCH"> <input
-												type="hidden" name="id_editar" value="<%=user.getId()%>">
+												type="hidden" name="id_editar" value="<%=userUT.getId()%>">
 											<!-- esto es para mandar el codigo al servlet -->
 										</form>
 									</td>
 								</tr>
 								<%
 								}
-								//TODO podria haber generado una edicion en la fila
-								} else {
-								%>
-								<tr>
-									<td>123</td>
-									<td>Salamanca Hector</td>
-									<td>Admin</td>
-								</tr>
-								<%
 								}
 								%>
 							</tbody>
