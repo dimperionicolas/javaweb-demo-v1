@@ -30,7 +30,6 @@ public class UsuarioServlet extends HttpServlet {
 		userList = controller.getAllUsers();
 		HttpSession session = request.getSession();
 		session.setAttribute("userList", userList);
-		// TODO podria cargar la pagina y cuando lleguen los datos cargarlos
 		response.sendRedirect("usuariostodos.jsp");
 	}
 
@@ -70,7 +69,6 @@ public class UsuarioServlet extends HttpServlet {
 			throws ServletException, IOException {
 		int id_eliminar = Integer.parseInt(request.getParameter("id_eliminar"));
 		controller.deleteUser(id_eliminar);
-		// TODO no se actualizo
 		response.sendRedirect("usuariostodos.jsp");
 	}
 
@@ -88,8 +86,8 @@ public class UsuarioServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			System.out.println("Esta dando error al obtener el ID Logueado");
+			// TODO
 		}
-
 		request.getSession().setAttribute("userToEdit", userToEdit);
 		response.sendRedirect("usuarioeditar.jsp");
 
