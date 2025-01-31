@@ -43,8 +43,8 @@
 				</tfoot>
 				<tbody>
 					<%
-					List<Odontologo> odontoList = (List<Odontologo>) request.getSession().getAttribute("odontoList");
-					for (Odontologo odonto : odontoList) {
+					List<OdontoDTO> odontoList = (List<OdontoDTO>) request.getSession().getAttribute("odontoList");
+					for (OdontoDTO odonto : odontoList) {
 					%>
 					<tr>
 						<td><%=odonto.getDni()%></td>

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import DTO.OdontoDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import logic.Controller;
-import model.Odontologo;
 
 @WebServlet(name = "OdontologoServlet", urlPatterns = "/odontologo")
 public class OdontologoServlet extends HttpServlet {
@@ -25,7 +25,7 @@ public class OdontologoServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<Odontologo> odontoList = new ArrayList<>();
+		List<OdontoDTO> odontoList = new ArrayList<>();
 		odontoList = controller.getAllOdonto();
 		HttpSession session = request.getSession();
 		session.setAttribute("odontoList", odontoList);
@@ -34,7 +34,6 @@ public class OdontologoServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		String method = request.getParameter("_method");
 		if (method == null) { // Create
 			String dni = request.getParameter("dni");
@@ -66,12 +65,10 @@ public class OdontologoServlet extends HttpServlet {
 		if (true) {
 			// TODO validar si puede ver detalles
 		}
-
-		Odontologo odontoById = controller.findOdontoById(id_detalles);
+		OdontoDTO odontoById = controller.findOdontoById(id_detalles);
 		HttpSession session = request.getSession();
 		session.setAttribute("odontodetalle", odontoById);
 		response.sendRedirect("odontodetalle.jsp");
-
 	}
 
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
@@ -87,21 +84,19 @@ public class OdontologoServlet extends HttpServlet {
 	protected void doPrepareForUpdate(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String id_editar = request.getParameter("id_editar");
-		Odontologo odontoToEdit = controller.findOdontoById(id_editar);
+		OdontoDTO odontoToEdit = controller.findOdontoById(id_editar);
 		if (true) {
 			// TODO validar si puede editar
 		}
 		request.getSession().setAttribute("odontoToEdit", odontoToEdit);
 		response.sendRedirect("odontoeditar.jsp");
-
 	}
 
 	protected void doUpdate(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
-		response.setHeader("Pragma", "no-cache"); // HTTP 1.0
-		response.setDateHeader("Expires", 0); // Proxies
-
+		// response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		// response.setHeader("Pragma", "no-cache");
+		// response.setDateHeader("Expires", 0);
 		if (true) {
 			// TODO validar si puede editar
 		}

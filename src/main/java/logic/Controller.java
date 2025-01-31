@@ -2,10 +2,12 @@ package logic;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import DTO.OdontoDTO;
 import DTO.UsuarioDTO;
 import model.Horario;
 import model.Odontologo;
@@ -32,7 +34,8 @@ public class Controller {
 		Usuario usuario = new Usuario();
 		usuario.setNombre_usuario(nombreUsuario);
 		usuario.setRol(rol);
-		usuario.setContrasenia(BCrypt.hashpw(contrasenia, BCrypt.gensalt()));
+		String hashpw = BCrypt.hashpw(contrasenia, BCrypt.gensalt());
+		usuario.setContrasenia(hashpw);
 		persistenceController.createUser(usuario);
 	}
 
@@ -111,8 +114,12 @@ public class Controller {
 		}
 	}
 
-	public List<Odontologo> getAllOdonto() {
-		return persistenceController.getAllOdonto();
+	public List<OdontoDTO> getAllOdonto() {
+		List<OdontoDTO> allOdonto = new ArrayList<>();
+		for (Odontologo odontologo : persistenceController.getAllOdonto()) {
+			allOdonto.add(new OdontoDTO(odontologo));
+		}
+		return allOdonto;
 	}
 
 	public void deleteOdonto(String id_eliminar) {
@@ -120,9 +127,9 @@ public class Controller {
 		persistenceController.deleteOdonto(id);
 	}
 
-	public Odontologo findOdontoById(String id_editar) {
+	public OdontoDTO findOdontoById(String id_editar) {
 		int id = Integer.parseInt(id_editar);
-		return persistenceController.findOdontoById(id);
+		return new OdontoDTO(persistenceController.findOdontoById(id));
 	}
 
 	public void updateOdonto(String id_editar, String dni, String nombre, String apellido, String telefono,

@@ -1,14 +1,14 @@
+<%@page import="DTO.OdontoDTO"%>
 <%@page import="model.Odontologo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="components/editupdatestart.jsp"%>
-
+<%
+OdontoDTO odontoToEdit = (OdontoDTO) request.getSession().getAttribute("odontoToEdit");
+%>
 
 <div class="text-center">
 	<h1 class="h4 text-gray-900 mb-4">Editar odontólogo</h1>
 </div>
-<%
-Odontologo odontoToEdit = (Odontologo) request.getSession().getAttribute("odontoToEdit");
-%>
 
 <form class="user" action="odontologo" method="POST">
 	<div class="form-group row">
