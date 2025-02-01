@@ -20,15 +20,26 @@ if (loggedUserPS == null) {
 
 <title>Consultorio</title>
 
-<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
-	type="text/css">
+<!-- Font Awesome -->
+<link
+	href="${pageContext.request.contextPath}/webjars/font-awesome/6.5.1/css/all.min.css"
+	rel="stylesheet" type="text/css">
+
 <link
 	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
 	rel="stylesheet">
 
-<link href="css/sb-admin-2.min.css" rel="stylesheet">
-<link href="vendor/datatables/dataTables.bootstrap4.min.css"
+<!-- SB Admin 2 CSS -->
+<link
+	href="${pageContext.request.contextPath}/webjars/startbootstrap-sb-admin-2/4.1.3/css/sb-admin-2.min.css"
 	rel="stylesheet">
+
+<!-- DataTables CSS -->
+<link
+	href="${pageContext.request.contextPath}/webjars/datatables/1.10.24/css/dataTables.bootstrap4.min.css"
+	rel="stylesheet">
+
+
 </head>
 <body id="page-top">
 	<div id="wrapper">

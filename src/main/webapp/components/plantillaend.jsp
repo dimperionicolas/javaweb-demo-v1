@@ -21,29 +21,40 @@
 <a class="scroll-to-top rounded" href="#page-top"> <i
 	class="fas fa-angle-up"></i>
 </a>
-<!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script
+	src="${pageContext.request.contextPath}/webjars/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/webjars/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
 
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Core plugin JavaScript -->
+<script
+	src="${pageContext.request.contextPath}/webjars/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<!-- Custom scripts for all pages -->
+<script
+	src="${pageContext.request.contextPath}/webjars/startbootstrap-sb-admin-2/4.1.3/js/sb-admin-2.min.js"></script>
 
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
+<!-- Chart.js -->
+<script
+	src="${pageContext.request.contextPath}/webjars/chartjs/2.9.4/chart.umd.js"></script>
 
-<!-- Page level plugins -->
-<script src="vendor/chart.js/Chart.min.js"></script>
+
+<!-- Page level demo JavaScript -->
+<script
+	src="${pageContext.request.contextPath}/webjars/startbootstrap-sb-admin-2/4.1.3/js/demo/chart-area-demo.js"></script>
+<script
+	src="${pageContext.request.contextPath}/webjars/startbootstrap-sb-admin-2/4.1.3/js/demo/chart-pie-demo.js"></script>
+
+<!-- DataTables JavaScript -->
+<script
+	src="${pageContext.request.contextPath}/webjars/datatables/1.10.24/js/jquery.dataTables.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/webjars/datatables/1.10.24/js/dataTables.bootstrap4.min.js"></script>
 
 <!-- Page level custom scripts -->
-<script src="js/demo/chart-area-demo.js"></script>
-<script src="js/demo/chart-pie-demo.js"></script>
+<script
+	src="${pageContext.request.contextPath}/webjars/startbootstrap-sb-admin-2/4.1.3/js/demo/datatables-demo.js"></script>
 
-<!-- Page level plugins -->
-<script src="vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-<!-- Page level custom scripts -->
-<script src="js/demo/datatables-demo.js"></script>
 
 </body>
 </html>
