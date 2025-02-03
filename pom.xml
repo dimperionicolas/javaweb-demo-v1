@@ -80,8 +80,8 @@
 			<artifactId>jbcrypt</artifactId>
 			<version>0.4</version>
 		</dependency>
-		
-		
+
+
 		<!--sb-admin-2 V4.1.3-->
 		<dependency>
 			<groupId>org.webjars</groupId>
@@ -92,7 +92,7 @@
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>bootstrap</artifactId>
-			<!--<version>5.3.3</version> No es compatible con la version de sb-admin.2--> 
+			<!--<version>5.3.3</version> No es compatible con la version de sb-admin.2-->
 			<version>4.6.0</version>
 		</dependency>
 		<!--datatables v1.10.24-->
@@ -138,6 +138,16 @@
 			<artifactId>webjars-servlet-2.x</artifactId>
 			<version>1.6</version>
 		</dependency>
+
+
+		<!-- Bootstrap Datepicker (WebJar) -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap-datepicker</artifactId>
+			<version>1.9.0</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>

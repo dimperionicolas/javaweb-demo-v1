@@ -24,6 +24,13 @@ if (loggedUserPS == null) {
 <link
 	href="${pageContext.request.contextPath}/webjars/font-awesome/6.5.1/css/all.min.css"
 	rel="stylesheet" type="text/css">
+<!-- Bootstrap 4 -->
+<link
+	href="${pageContext.request.contextPath}/webjars/bootstrap/4.6.0/css/bootstrap.min.css"
+	rel="stylesheet">
+<!-- Bootstrap Datepicker (para el calendario) -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/webjars/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
 
 <link
 	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -38,6 +45,10 @@ if (loggedUserPS == null) {
 <link
 	href="${pageContext.request.contextPath}/webjars/datatables/1.10.24/css/dataTables.bootstrap4.min.css"
 	rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="components/css/style.css" rel="stylesheet">
+
 
 
 </head>

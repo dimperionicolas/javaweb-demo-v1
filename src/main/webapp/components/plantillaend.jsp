@@ -55,6 +55,12 @@
 <script
 	src="${pageContext.request.contextPath}/webjars/startbootstrap-sb-admin-2/4.1.3/js/demo/datatables-demo.js"></script>
 
+<!-- Scripts -->
+<script src="${pageContext.request.contextPath}/webjars/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="${pageContext.request.contextPath}/webjars/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.es.min.js"></script>
+
+<!-- Custom Scripts -->
+<script src="components/js/script.js"></script>
 
 </body>
 </html>
