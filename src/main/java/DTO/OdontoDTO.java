@@ -38,7 +38,7 @@ public class OdontoDTO {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		this.fecha_nac = fechanac.format(formatter);
 
-		this.fecha_nac = this.especialidad = odontologo.getEspecialidad();
+		this.especialidad = odontologo.getEspecialidad();
 		this.turnos = odontologo.getTurnos();
 		if (odontologo.getUsuario() != null) {
 

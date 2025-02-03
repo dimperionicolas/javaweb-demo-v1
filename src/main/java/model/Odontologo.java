@@ -63,4 +63,9 @@ public class Odontologo extends Persona {
 		this.horario = horario;
 	}
 
+	// Get turnos libres
+	// get turnos ocupados
+	// get turnos no trabaja
+	// get lista completa de esto?
+
 }

@@ -8,9 +8,11 @@ import java.util.List;
 import org.mindrot.jbcrypt.BCrypt;
 
 import DTO.OdontoDTO;
+import DTO.TurnoDTO;
 import DTO.UsuarioDTO;
 import model.Horario;
 import model.Odontologo;
+import model.Turno;
 import model.Usuario;
 import persistence.PersistenceController;
 
@@ -139,6 +141,34 @@ public class Controller {
 		int id = Integer.parseInt(id_editar);
 		odontologo.setId(id);
 		persistenceController.updateOdonto(odontologo);
+	}
+
+	public List<TurnoDTO> obtenerTurnosPorMedico(String odontoId, String fecha) {
+		List<TurnoDTO> listaFinalTurnos = new ArrayList<>();
+		List<Turno> turnosOdonto = getTurnosOdontologo(odontoId);
+		turnosOdonto = new ArrayList<>();
+		for (int i = 8; i < 21; i++) {
+			listaFinalTurnos.add(new TurnoDTO("fueradehorario", i + " ", fecha));
+		}
+		for (TurnoDTO turnoDTO : listaFinalTurnos) {
+			for (Turno turnoOdonto : turnosOdonto) {
+				if (turnoDTO.getHoraTurno() == turnoOdonto.getHoraTurno()) {
+					turnoDTO = new TurnoDTO(turnoOdonto);
+				}
+			}
+
+		}
+		return listaFinalTurnos;
+	}
+
+	private List<Turno> getTurnosOdontologo(String odontoId) {
+		// TODO lista de turnos disponibles y ocupados
+		return List.of();
+	}
+
+	public List<Turno> obtenerTurnosPorPaciente() {
+		// TODO debe devolver una lista de turnos del paciente
+		return null;
 	}
 
 	//

@@ -75,18 +75,20 @@
 					class="collapse-item" href="usuarioalta.jsp">Alta usuario.</a>
 			</div>
 		</div></li>
+		
+		
 
 	<li class="nav-item"><a class="nav-link collapsed" href="#"
-		data-toggle="collapse" data-target="#collapseOdonto"
+		data-toggle="collapse" data-target="#collapseTurnos"
 		aria-expanded="true" aria-controls="collapseTwo"> <i
 			class="fas fa-solid fa-hospital-user"></i> <span>Turnos</span>
 	</a>
-		<div id="collapseOdonto" class="collapse" aria-labelledby="headingTwo"
+		<div id="collapseTurnos" class="collapse" aria-labelledby="headingTwo"
 			data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">Acciones:</h6>
-				<a class="collapse-item" href="">Ver turnos.</a> <a
-					class="collapse-item" href="odontoalta.jsp">Nuevos turnos.</a>
+				<a class="collapse-item" href="calendar.jsp">Ver turnos</a> <a
+					class="collapse-item" href="odontoalta.jsp">Nuevos turnos</a>
 			</div>
 		</div></li>
 

@@ -9,6 +9,6 @@
 		<i class="fas fa-download fa-sm text-white-50" /></i> Generate Report
 	</a>
 </div>
-<p></p>
+<p>Turnos del día de hoy</p>
 
 <%@include file="components/plantillaend.jsp"%>

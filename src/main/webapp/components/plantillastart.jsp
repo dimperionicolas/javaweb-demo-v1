@@ -1,10 +1,18 @@
 <%@page import="DTO.UsuarioDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-UsuarioDTO loggedUserPS = (UsuarioDTO) request.getSession().getAttribute("loggedUser");
-if (loggedUserPS == null) {
-	response.sendRedirect("login.jsp");
+Object loggedUserObj = request.getSession().getAttribute("loggedUser");
+if (loggedUserObj == null) {
+    response.sendRedirect(request.getContextPath() + "/login.jsp");
+    return; 
 }
+if (!(loggedUserObj instanceof UsuarioDTO)) {
+    session.invalidate(); 
+    response.sendRedirect(request.getContextPath() + "/login.jsp");
+    return;
+}
+UsuarioDTO loggedUserPS = (UsuarioDTO) loggedUserObj;
+
 %>
 
 <!DOCTYPE html>
