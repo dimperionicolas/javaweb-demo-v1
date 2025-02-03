@@ -1,4 +1,5 @@
 
+<%@page import="java.util.ArrayList"%>
 <%@page import="model.Odontologo"%>
 <%@page import="DTO.OdontoDTO"%>
 <%@page import="java.util.List"%>
@@ -15,8 +16,7 @@
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-			<table class="table table-bordered" id="dataTable" width="100%"
-				cellspacing="0">
+			<table class="table table-bordered" id="dataTable" >
 				<thead>
 					<tr>
 						<th>DNI</th>
@@ -43,7 +43,20 @@
 				</tfoot>
 				<tbody>
 					<%
-					List<OdontoDTO> odontoList = (List<OdontoDTO>) request.getSession().getAttribute("odontoList");
+					Object odontoObjList = request.getSession().getAttribute("odontoList");
+					List<OdontoDTO> odontoList = new ArrayList<>();
+					if (odontoObjList instanceof List<?> rawList) {
+						for (Object item : rawList) {
+							if (item instanceof OdontoDTO) {
+						odontoList.add((OdontoDTO) item);
+							} else {
+						throw new IllegalStateException("Elemento no es de tipo OdontoDTO");
+							}
+						}
+					} else {
+						System.out.println("Error al recibir la lista");
+					}
+
 					for (OdontoDTO odonto : odontoList) {
 					%>
 					<tr>
@@ -53,11 +66,8 @@
 						<td><%=odonto.getTelefono()%></td>
 						<td><%=odonto.getEspecialidad()%></td>
 						<td><%=odonto.getFecha_nac()%></td>
-						<td> de 
-						<%=odonto.getHorario().getHorario_inicio()%>
-						 a 
-						<%=odonto.getHorario().getHorario_fin()%>
-						
+						<td>de <%=odonto.getHorario().getHorario_inicio()%> a <%=odonto.getHorario().getHorario_fin()%>
+
 						</td>
 						<td style="display: flex;">
 							<form name="detalles" action="odontologo" method="POST">

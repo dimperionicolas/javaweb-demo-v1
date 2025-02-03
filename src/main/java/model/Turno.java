@@ -9,15 +9,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 public class Turno {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_turno;
-	@Temporal(TemporalType.DATE)
 	private LocalDate fechaTurno;
 
 	private String horaTurno;

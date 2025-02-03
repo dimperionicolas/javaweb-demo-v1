@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="components/editupdatestart.jsp"%>
@@ -11,8 +12,7 @@
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-			<table class="table table-bordered" id="dataTable" width="100%"
-				cellspacing="0">
+			<table class="table table-bordered" id="dataTable" >
 				<thead>
 					<tr>
 						<th>Id</th>
@@ -31,9 +31,20 @@
 				</tfoot>
 				<tbody>
 					<%
-					List<UsuarioDTO> userListUT = (List<UsuarioDTO>) request.getSession().getAttribute("userList");
-					if (!userListUT.isEmpty()) {
-						for (UsuarioDTO userUT : userListUT) {
+					Object userListObjUT = request.getSession().getAttribute("userList");
+					List<UsuarioDTO> userListUT = new ArrayList<>();
+					if (userListObjUT instanceof List<?> rawList) {
+						for (Object item : rawList) {
+							if (item instanceof UsuarioDTO) {
+						userListUT.add((UsuarioDTO) item);
+							} else {
+						throw new IllegalStateException("Elemento no es de tipo OdontoDTO");
+							}
+						}
+					} else {
+						System.out.println("Error al recibir la lista");
+					}
+					for (UsuarioDTO userUT : userListUT) {
 					%>
 					<tr>
 						<td><%=userUT.getId()%></td>
@@ -63,7 +74,6 @@
 						</td>
 					</tr>
 					<%
-					}
 					}
 					%>
 				</tbody>

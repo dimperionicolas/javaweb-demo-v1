@@ -8,8 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -23,7 +21,6 @@ public class Persona {
 	private String apellido;
 	private String telefono;
 	private String direccion;
-	@Temporal(TemporalType.DATE)
 	private LocalDate fecha_nac;
 
 	public Persona() {
