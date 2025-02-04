@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import model.Odontologo;
+import model.Turno;
 
 class OdontologoJPAController {
 	private EntityManagerFactory emf;
@@ -110,5 +111,10 @@ class OdontologoJPAController {
 		} finally {
 			em.close();
 		}
+	}
+
+	public List<Turno> getTurnosByOdontologo(String id_odonto, String fecha) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

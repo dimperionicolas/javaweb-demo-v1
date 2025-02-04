@@ -7,14 +7,6 @@
 	<persistence-unit name="javaweb_demo_PU"
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-<!-- 		<class>model.Horario</class> -->
-<!-- 		<class>model.Odontologo</class> -->
-<!-- 		<class>model.Paciente</class> -->
-<!-- 		<class>model.Persona</class> -->
-<!-- 		<class>model.Responsable</class> -->
-<!-- 		<class>model.Secretario</class> -->
-<!-- 		<class>model.Turno</class> -->
-<!-- 		<class>model.Usuario</class> -->
 
 		<properties>
 			<!-- Propiedades de la base de datos -->
@@ -24,7 +16,7 @@
 				value="jdbc:mysql://localhost:3306/javaweb_demo" />
 			<property name="jakarta.persistence.jdbc.user" value="admin" />
 			<property name="jakarta.persistence.jdbc.password"
-				value="151287admin" />
+				value="" />
 
 			<property name="hibernate.dialect"
 				value="org.hibernate.dialect.MySQLDialect" />
@@ -32,12 +24,8 @@
 
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
-<!-- 			<property name="jakarta.persistence.bean.manager" -->
-<!-- 				value="#{entityManagerFactory}" /> -->
 			<property name="hibernate.archive.autodetection"
 				value="class, hbm" />
-
-
 		</properties>
 	</persistence-unit>
 </persistence>

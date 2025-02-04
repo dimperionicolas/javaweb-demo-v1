@@ -3,21 +3,21 @@ package DTO;
 import model.Usuario;
 
 public class UsuarioDTO {
-	private int id;
+	private String id;
 	private String nombre;
 	private String rol;
 
 	public UsuarioDTO(Usuario usuario) {
-		this.id = usuario.getId_usuario();
+		this.id = String.valueOf(usuario.getId_usuario());
 		this.nombre = usuario.getNombre_usuario();
 		this.rol = usuario.getRol();
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

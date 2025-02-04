@@ -5,6 +5,7 @@ import java.util.List;
 
 import DTO.UsuarioDTO;
 import model.Odontologo;
+import model.Turno;
 import model.Usuario;
 
 public class PersistenceController {
@@ -87,6 +88,15 @@ public class PersistenceController {
 
 	public List<Odontologo> findOdontoByName(String name) {
 		return odonJPA.findByName(name);
+	}
+
+	public List<Turno> getTurnosOdontologo(String id_odonto, String fecha) {
+		return odonJPA.getTurnosByOdontologo(id_odonto, fecha);
+
+	}
+
+	public List<Turno> getTurnosPaciente(int pacienteId) {
+		return null;
 	}
 
 }
