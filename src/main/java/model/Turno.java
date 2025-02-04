@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,16 +9,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 public class Turno {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_turno;
-	@Temporal(TemporalType.DATE)
-	private Date fechaTurno;
+	private LocalDate fechaTurno;
 
 	private String horaTurno;
 	private String motivoConsulta;
@@ -34,7 +31,7 @@ public class Turno {
 		super();
 	}
 
-	public Turno(int id_turno, Date fechaTurno, String horaTurno, String motivoConsulta) {
+	public Turno(int id_turno, LocalDate fechaTurno, String horaTurno, String motivoConsulta) {
 		super();
 		this.id_turno = id_turno;
 		this.fechaTurno = fechaTurno;
@@ -50,11 +47,11 @@ public class Turno {
 		this.id_turno = id_turno;
 	}
 
-	public Date getFechaTurno() {
+	public LocalDate getFechaTurno() {
 		return fechaTurno;
 	}
 
-	public void setFechaTurno(Date fechaTurno) {
+	public void setFechaTurno(LocalDate fechaTurno) {
 		this.fechaTurno = fechaTurno;
 	}
 

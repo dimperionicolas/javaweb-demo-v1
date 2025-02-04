@@ -1,5 +1,6 @@
 package persistence;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.EntityManager;
@@ -113,8 +114,17 @@ class OdontologoJPAController {
 		}
 	}
 
-	public List<Turno> getTurnosByOdontologo(String id_odonto, String fecha) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Turno> getTurnosByOdontologo(String id_odonto, LocalDate fecha) {
+		EntityManager em = emf.createEntityManager();
+		try {
+			return em
+					.createQuery("SELECT t FROM Turno t WHERE t.odontoRel.id_persona = :id_odonto "
+							+ "AND t.fechaTurno = :fecha", Turno.class)
+					.setParameter("id_odonto", Integer.parseInt(id_odonto)).setParameter("fecha", fecha)
+					.getResultList();
+		} finally {
+			em.close();
+		}
 	}
+
 }

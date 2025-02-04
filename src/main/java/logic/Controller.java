@@ -10,6 +10,7 @@ import DTO.TurnoDTO;
 import DTO.UsuarioDTO;
 import model.Horario;
 import model.Odontologo;
+import model.Paciente;
 import model.Turno;
 import model.Usuario;
 import persistence.PersistenceController;
@@ -129,6 +130,25 @@ public class Controller {
 		persistenceController.updateOdonto(odontologo);
 	}
 
+	// Paciente
+
+	public void createPaciente() {
+	}
+
+	public void deletePaciente() {
+	}
+
+	public void updatePaciente() {
+	}
+
+	public void getAllPaciente() {
+	}
+
+	public void getPacienteByID() {
+	}
+
+	// Odontologo, Paciente, Turno
+
 	public List<TurnoDTO> obtenerTurnosPorMedico(String odontoId, String fecha) {
 		List<TurnoDTO> listaFinalTurnos = new ArrayList<>();
 		List<Turno> turnosOdonto = persistenceController.getTurnosOdontologo(odontoId, fecha);
@@ -145,16 +165,40 @@ public class Controller {
 		return listaFinalTurnos;
 	}
 
+	public void agendarTurno(LocalDate fecha, String hora, String motivo, int odontologoId, int pacienteId)
+			throws Exception {
+		Odontologo odontologo = persistenceController.findOdontoById(odontologoId);
+		Paciente paciente = persistenceController.findPacienteById(pacienteId);
+
+		if (odontologo == null) {
+			throw new Exception("Odontólogo no encontrado");
+		}
+		if (paciente == null) {
+			throw new Exception("Paciente no encontrado");
+		}
+
+		Turno turno = new Turno();
+		turno.setFechaTurno(fecha);
+		turno.setHoraTurno(hora);
+		turno.setMotivoConsulta(motivo);
+		turno.setOdontoRel(odontologo);
+		turno.setPacieRel(paciente);
+
+		persistenceController.createTurno(turno);
+	}
+
 	public List<Turno> obtenerTurnosPorPaciente(int pacienteId) {
 		return persistenceController.getTurnosPaciente(pacienteId);
 	}
 
 	public static String getDateToStringDate(LocalDate localDate) {
+		// TODO v2 DateUtils
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return localDate.format(formatter);
 	}
 
 	public static LocalDate getStringDateToDate(String date) {
+		// TODO v2 DateUtils
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return LocalDate.parse(date, formatter);
 	}
