@@ -60,7 +60,7 @@ public class CalendarServlet extends HttpServlet {
 
 		} else if ("lista".equals(method)) {
 			// Lógica para obtener los turnos
-			List<TurnoDTO> turnos = controller.obtenerTurnosPorMedico(odontoId, fecha);
+			List<TurnoDTO> turnos = controller.getTurnoByOdontoIdAndDate(odontoId, fecha);
 
 			// Construcción manual de JSON
 			StringBuilder json = new StringBuilder("[");

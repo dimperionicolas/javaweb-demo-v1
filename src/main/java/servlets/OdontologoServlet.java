@@ -68,7 +68,7 @@ public class OdontologoServlet extends HttpServlet {
 
 	private void showDetails(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String id_detalles = request.getParameter("id_detalles");
-		OdontoDTO odontoById = controller.findOdontoById(id_detalles);
+		OdontoDTO odontoById = controller.getOdontoById(id_detalles);
 		HttpSession session = request.getSession();
 		session.setAttribute("odontodetalle", odontoById);
 		response.setStatus(HttpServletResponse.SC_OK);
@@ -86,7 +86,7 @@ public class OdontologoServlet extends HttpServlet {
 	protected void doPrepareForUpdate(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String id_editar = request.getParameter("id_editar");
-		OdontoDTO odontoToEdit = controller.findOdontoById(id_editar);
+		OdontoDTO odontoToEdit = controller.getOdontoById(id_editar);
 		request.getSession().setAttribute("odontoToEdit", odontoToEdit);
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.sendRedirect("odontoeditar.jsp");

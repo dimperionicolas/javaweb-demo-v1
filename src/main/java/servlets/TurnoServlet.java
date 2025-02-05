@@ -22,7 +22,7 @@ public class TurnoServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		boolean disponible = controller.verificarDisponibilidadTurno(LocalDate.now().plusDays(1), "14:00", 1);
+		boolean disponible = controller.validateDisponibilidadTurno(LocalDate.now().plusDays(1), "14:00", 1);
 
 	}
 
@@ -45,7 +45,7 @@ public class TurnoServlet extends HttpServlet {
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// Para cancelar un turno
 		try {
-			controller.cancelarTurno(1);
+			controller.deleteTurno(1);
 		} catch (Exception e) {
 			// Manejar el error
 		}

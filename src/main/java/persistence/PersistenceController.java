@@ -85,12 +85,9 @@ public class PersistenceController {
 		return odonJPA.findByName(name);
 	}
 
-	public List<Turno> getTurnosOdontologo(String id_odonto, String fecha) {
-		return odonJPA.getTurnosByOdontologo(id_odonto, LocalDate.parse(fecha));
-	}
-
 	public List<Turno> getTurnosPaciente(int pacienteId) {
 		return turnJPA.findByPaciente(pacienteId);
+		// TODO ver
 	}
 
 	public void cancelarTurno(int turnoId) throws Exception {
@@ -111,4 +108,15 @@ public class PersistenceController {
 		}
 		turnJPA.create(turno);
 	}
+
+	public List<Turno> getTurnosByOdontoId(int odontoId) {
+		// TODO turnos del odontologo
+		return null;
+
+	}
+
+	public List<Turno> getTurnosOdontologo(String id_odonto, String fecha) {
+		return odonJPA.getTurnosByOdontologo(id_odonto, LocalDate.parse(fecha));
+	}
+
 }

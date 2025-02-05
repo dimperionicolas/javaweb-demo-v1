@@ -70,7 +70,7 @@ public class UsuarioServlet extends HttpServlet {
 	protected void doPrepareForUpdate(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String id_editar = request.getParameter("id_editar");
-		UsuarioDTO userToEdit = controller.findUserById(id_editar);
+		UsuarioDTO userToEdit = controller.getUserById(id_editar);
 		// TODO metodo o servicio para validar y autenticar
 		request.getSession().setAttribute("puedeEditar", true);
 		try {
