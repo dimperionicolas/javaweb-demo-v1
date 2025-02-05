@@ -1,9 +1,8 @@
 package DTO;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import logic.Controller;
 import model.Horario;
 import model.Odontologo;
 import model.Turno;
@@ -34,14 +33,10 @@ public class OdontoDTO {
 		this.telefono = odontologo.getTelefono();
 		this.direccion = odontologo.getDireccion();
 
-		LocalDate fechanac = odontologo.getFecha_nac();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		this.fecha_nac = fechanac.format(formatter);
-
+		this.fecha_nac = Controller.getDateToStringDate(odontologo.getFecha_nac());
 		this.especialidad = odontologo.getEspecialidad();
 		this.turnos = odontologo.getTurnos();
 		if (odontologo.getUsuario() != null) {
-
 			this.usuario = new UsuarioDTO(odontologo.getUsuario());
 		}
 		this.horario = odontologo.getHorario();

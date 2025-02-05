@@ -1,8 +1,6 @@
 package DTO;
 
-import java.time.format.DateTimeFormatter;
-
-import model.Odontologo;
+import logic.Controller;
 import model.Paciente;
 import model.Turno;
 
@@ -11,9 +9,9 @@ public class TurnoDTO {
 	private int id_turno;
 	private String fechaTurno;
 	private String horaTurno;
-	private String estado = "disponible";
-	private Odontologo odonto;
-	private Paciente paciente;
+	private String estado = "disponible"; // TODO v2 enum de estados
+	private OdontoDTO odonto;
+	private Paciente paciente; // TODO v2 PacienteDTO
 	private String motivo;
 
 	public TurnoDTO() {
@@ -23,12 +21,9 @@ public class TurnoDTO {
 	public TurnoDTO(Turno turno) {
 		super();
 		this.id_turno = turno.getId_turno();
-
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		this.fechaTurno = turno.getFechaTurno().format(formatter);
-
+		this.fechaTurno = Controller.getDateToStringDate(turno.getFechaTurno());
 		this.horaTurno = turno.getHoraTurno();
-		this.odonto = turno.getOdontoRel();
+		this.odonto = new OdontoDTO(turno.getOdontoRel());
 		this.paciente = turno.getPacieRel();
 		this.motivo = turno.getMotivoConsulta();
 		if (turno.getPacieRel() != null) {
@@ -36,6 +31,7 @@ public class TurnoDTO {
 		}
 	}
 
+	// Set de turnos disponibles genericos.
 	public TurnoDTO(String estado, String hora, String fecha) {
 		this.estado = estado;
 		this.horaTurno = hora;
@@ -74,11 +70,11 @@ public class TurnoDTO {
 		this.estado = estado;
 	}
 
-	public Odontologo getOdonto() {
+	public OdontoDTO getOdonto() {
 		return odonto;
 	}
 
-	public void setOdonto(Odontologo odonto) {
+	public void setOdonto(OdontoDTO odonto) {
 		this.odonto = odonto;
 	}
 

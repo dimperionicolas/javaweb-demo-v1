@@ -5,13 +5,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 import DTO.OdontoDTO;
 import DTO.TurnoDTO;
 import DTO.UsuarioDTO;
 import model.Horario;
 import model.Odontologo;
+import model.Paciente;
 import model.Turno;
 import model.Usuario;
 import persistence.PersistenceController;
@@ -36,8 +35,8 @@ public class Controller {
 		Usuario usuario = new Usuario();
 		usuario.setNombre_usuario(nombreUsuario);
 		usuario.setRol(rol);
-		String hashpw = BCrypt.hashpw(contrasenia, BCrypt.gensalt());
-		usuario.setContrasenia(hashpw);
+		// TODO v2 encriptar contraseña.
+		usuario.setContrasenia(contrasenia);
 		persistenceController.createUser(usuario);
 	}
 
@@ -50,10 +49,10 @@ public class Controller {
 		persistenceController.deleteUser(id);
 	}
 
-	public Usuario findUserById(String id_editar) {
+	public UsuarioDTO findUserById(String id_editar) {
 		int id = Integer.parseInt(id_editar);
-		return persistenceController.findUserById(id);
-		// TODO cambiar return por UsuarioDTO
+		Usuario userById = persistenceController.findUserById(id);
+		return new UsuarioDTO(userById);
 	}
 
 	public void updateUser(Usuario userToEdit) {
@@ -66,14 +65,10 @@ public class Controller {
 
 	private boolean rolValido(String rol) {
 		return rol.equals("admin") || rol.equals("user");
+		// TODO v2 autenticacion y roles
 	}
 
-	//
-	//
-	//
-	//
 	// Odontologos
-
 	public void createOdontologo(String dni, String nombre, String apellido, String telefono, String direccion,
 			String especialidad, String fechanac, String hora_inicio, String hora_fin) {
 		isValidOdontologo(dni, nombre, apellido, telefono, direccion, especialidad, fechanac, hora_inicio, hora_fin);
@@ -81,7 +76,6 @@ public class Controller {
 		Odontologo odontologo = makeOdontologo(dni, nombre, apellido, telefono, direccion, especialidad, fechanac,
 				hora_inicio, hora_fin);
 		persistenceController.createOdontologo(odontologo);
-		// TODO quedo persistido el horario?
 	}
 
 	private Odontologo makeOdontologo(String dni, String nombre, String apellido, String telefono, String direccion,
@@ -93,15 +87,8 @@ public class Controller {
 		odontologo.setDireccion(direccion);
 		odontologo.setEspecialidad(especialidad);
 		odontologo.setTelefono(telefono);
-
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate fecha = LocalDate.parse(fechanac, formatter);
-
-		odontologo.setFecha_nac(fecha);
-		Horario horario = new Horario();
-		horario.setHorario_inicio(hora_inicio);
-		horario.setHorario_fin(hora_fin);
-		odontologo.setHorario(horario);
+		odontologo.setFecha_nac(getStringDateToDate(fechanac)); // Convierto fecha con metodo estatico
+		odontologo.setHorario(new Horario(hora_inicio, hora_fin));
 		return odontologo;
 	}
 
@@ -143,39 +130,77 @@ public class Controller {
 		persistenceController.updateOdonto(odontologo);
 	}
 
+	// Paciente
+
+	public void createPaciente() {
+	}
+
+	public void deletePaciente() {
+	}
+
+	public void updatePaciente() {
+	}
+
+	public void getAllPaciente() {
+	}
+
+	public void getPacienteByID() {
+	}
+
+	// Odontologo, Paciente, Turno
+
 	public List<TurnoDTO> obtenerTurnosPorMedico(String odontoId, String fecha) {
 		List<TurnoDTO> listaFinalTurnos = new ArrayList<>();
-		List<Turno> turnosOdonto = getTurnosOdontologo(odontoId);
-		turnosOdonto = new ArrayList<>();
+		List<Turno> turnosOdonto = persistenceController.getTurnosOdontologo(odontoId, fecha);
 		for (int i = 8; i < 21; i++) {
-			listaFinalTurnos.add(new TurnoDTO("fueradehorario", i + " ", fecha));
+			listaFinalTurnos.add(new TurnoDTO("Fuera de horario", String.valueOf(i), fecha));
 		}
 		for (TurnoDTO turnoDTO : listaFinalTurnos) {
 			for (Turno turnoOdonto : turnosOdonto) {
-				if (turnoDTO.getHoraTurno() == turnoOdonto.getHoraTurno()) {
+				if (turnoDTO.getHoraTurno().equals(turnoOdonto.getHoraTurno())) {
 					turnoDTO = new TurnoDTO(turnoOdonto);
 				}
 			}
-
 		}
 		return listaFinalTurnos;
 	}
 
-	private List<Turno> getTurnosOdontologo(String odontoId) {
-		// TODO lista de turnos disponibles y ocupados
-		return List.of();
+	public void agendarTurno(LocalDate fecha, String hora, String motivo, int odontologoId, int pacienteId)
+			throws Exception {
+		Odontologo odontologo = persistenceController.findOdontoById(odontologoId);
+		Paciente paciente = persistenceController.findPacienteById(pacienteId);
+
+		if (odontologo == null) {
+			throw new Exception("Odontólogo no encontrado");
+		}
+		if (paciente == null) {
+			throw new Exception("Paciente no encontrado");
+		}
+
+		Turno turno = new Turno();
+		turno.setFechaTurno(fecha);
+		turno.setHoraTurno(hora);
+		turno.setMotivoConsulta(motivo);
+		turno.setOdontoRel(odontologo);
+		turno.setPacieRel(paciente);
+
+		persistenceController.createTurno(turno);
 	}
 
-	public List<Turno> obtenerTurnosPorPaciente() {
-		// TODO debe devolver una lista de turnos del paciente
-		return null;
+	public List<Turno> obtenerTurnosPorPaciente(int pacienteId) {
+		return persistenceController.getTurnosPaciente(pacienteId);
 	}
 
-	//
-	//
-	//
-	//
-	//
-	// Paciente
+	public static String getDateToStringDate(LocalDate localDate) {
+		// TODO v2 DateUtils
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return localDate.format(formatter);
+	}
+
+	public static LocalDate getStringDateToDate(String date) {
+		// TODO v2 DateUtils
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return LocalDate.parse(date, formatter);
+	}
 
 }

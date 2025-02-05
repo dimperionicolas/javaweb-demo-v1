@@ -1,21 +1,24 @@
 package persistence;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import DTO.UsuarioDTO;
 import model.Odontologo;
+import model.Paciente;
+import model.Turno;
 import model.Usuario;
 
 public class PersistenceController {
 	HorarioJPAController horaJPA = new HorarioJPAController();
-//	PacienteJPAController paciJPA = new PacienteJPAController();
-//	PersonaJPAController persJPA = new PersonaJPAController();
-//	ResponsableJPAController respJPA = new ResponsableJPAController();
-//	SecretarioJPAController secrJPA = new SecretarioJPAController();
-//	TurnoJPAController turnJPA = new TurnoJPAController();
+	TurnoJPAController turnJPA = new TurnoJPAController();
 	OdontologoJPAController odonJPA = new OdontologoJPAController();
 	UsuarioJPAController userJPA = new UsuarioJPAController();
+	PacienteJPAController paciJPA = new PacienteJPAController();
+	// PersonaJPAController persJPA = new PersonaJPAController();
+	// ResponsableJPAController respJPA = new ResponsableJPAController();
+	// SecretarioJPAController secrJPA = new SecretarioJPAController();
 
 	public PersistenceController() {
 		super();
@@ -38,7 +41,7 @@ public class PersistenceController {
 	}
 
 	public Usuario findUserById(int id_editar) {
-		return userJPA.findById(id_editar); // TODO usuarioDTO?
+		return userJPA.findById(id_editar);
 	}
 
 	public void updateUser(Usuario userToEdit) {
@@ -55,22 +58,15 @@ public class PersistenceController {
 
 	// Odontologo
 	public List<Odontologo> getAllOdonto() {
-		return odonJPA.findAll(); // TODO devolver una lista refinada?
+		return odonJPA.findAll();
 	}
 
 	public void createOdontologo(Odontologo odontologo) {
-//		try {
-//			Horario horario = odontologo.getHorario();
-//			horaJPA.create(horario);
-//		} catch (Exception e) {
-//			System.out.println(e.getMessage());
-//		}
 		odonJPA.create(odontologo);
 	}
 
 	public void deleteOdonto(int id_eliminar) {
-		// TODO delete horario where id_horario = odontologo.horario.id
-		odonJPA.delete(id_eliminar); // TODO se eliminaron sus horas?
+		odonJPA.delete(id_eliminar);
 	}
 
 	public Odontologo findOdontoById(int id_editar) {
@@ -89,4 +85,30 @@ public class PersistenceController {
 		return odonJPA.findByName(name);
 	}
 
+	public List<Turno> getTurnosOdontologo(String id_odonto, String fecha) {
+		return odonJPA.getTurnosByOdontologo(id_odonto, LocalDate.parse(fecha));
+	}
+
+	public List<Turno> getTurnosPaciente(int pacienteId) {
+		return turnJPA.findByPaciente(pacienteId);
+	}
+
+	public void cancelarTurno(int turnoId) throws Exception {
+		turnJPA.cancelTurno(turnoId);
+	}
+
+	public boolean verificarDisponibilidadTurno(LocalDate fecha, String hora, int odontologoId) {
+		return turnJPA.isTurnoAvailable(fecha, hora, odontologoId);
+	}
+
+	public Paciente findPacienteById(int pacienteId) {
+		return paciJPA.findById(pacienteId);
+	}
+
+	public void createTurno(Turno turno) throws Exception {
+		if (!turnJPA.isTurnoAvailable(turno.getFechaTurno(), turno.getHoraTurno(), turno.getOdontoRel().getId())) {
+			throw new Exception("El turno ya está ocupado para ese horario y odontólogo");
+		}
+		turnJPA.create(turno);
+	}
 }

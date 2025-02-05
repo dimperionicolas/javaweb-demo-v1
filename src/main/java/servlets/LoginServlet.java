@@ -29,14 +29,15 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String username = (String) request.getParameter("username");
 		String password = (String) request.getParameter("password");
-
+		// TODO v2 ValidationService
 		UsuarioDTO loggedUser = controller.validateLogin(username, password);
 		if (loggedUser != null) {
 			HttpSession session = request.getSession();
 			session.setAttribute("loggedUser", loggedUser);
+			response.setStatus(HttpServletResponse.SC_OK);
 			response.sendRedirect("index.jsp");
 		} else {
-			// TODO redireccionar?
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.sendRedirect("loginerror.jsp");
 		}
 	}

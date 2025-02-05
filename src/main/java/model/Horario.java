@@ -24,6 +24,12 @@ public class Horario {
 		this.horario_fin = horario_fin;
 	}
 
+	public Horario(String horario_inicio, String horario_fin) {
+		super();
+		this.horario_inicio = horario_inicio;
+		this.horario_fin = horario_fin;
+	}
+
 	public int getId_horario() {
 		return id_horario;
 	}

@@ -30,27 +30,21 @@ public class UsuarioServlet extends HttpServlet {
 		userList = controller.getAllUsers();
 		HttpSession session = request.getSession();
 		session.setAttribute("userList", userList);
+		// TODO redireccion y code status ok.
 		response.sendRedirect("usuariostodos.jsp");
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		String method = request.getParameter("_method");
 		if (method == null) {
-			// doPost
 			String nombreusuario = request.getParameter("nombreusuario");
 			String rol = request.getParameter("rol");
 			String pass = request.getParameter("password");
 			String repePass = request.getParameter("repeatpassword");
-
 			if (!pass.equals(repePass)) {
 				request.setAttribute("error", "Las contraseñas no coinciden");
-				// TODO volver a intentarlo
+				// TODO status code y redireccion
 				return;
 			}
 			controller.createUser(nombreusuario, rol, pass);
@@ -69,26 +63,27 @@ public class UsuarioServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String id_eliminar = request.getParameter("id_eliminar");
 		controller.deleteUser(id_eliminar);
+		// TODO status code y redireccion
 		response.sendRedirect("usuariostodos.jsp");
 	}
 
 	protected void doPrepareForUpdate(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		String id_editar = request.getParameter("id_editar");
-		Usuario userToEdit = controller.findUserById(id_editar);
-		userToEdit.setContrasenia("");
+		UsuarioDTO userToEdit = controller.findUserById(id_editar);
+		// TODO metodo o servicio para validar y autenticar
 		request.getSession().setAttribute("puedeEditar", true);
 		try {
-			if (request.getSession().getAttribute("idLogueado") != null && Integer
-					.parseInt((String) request.getSession().getAttribute("idLogueado")) != userToEdit.getId_usuario()) {
+			if (request.getSession().getAttribute("idLogueado") != null
+					&& request.getSession().getAttribute("idLogueado") != userToEdit.getId()) {
 				request.getSession().setAttribute("puedeEditar", true);
 			}
 		} catch (Exception e) {
 			System.out.println("Esta dando error al obtener el ID Logueado");
-			// TODO
+			// TODO status code correspondiente y redireccion
 		}
 		request.getSession().setAttribute("userToEdit", userToEdit);
+		response.setStatus(HttpServletResponse.SC_OK); // TODO ver estandares
 		response.sendRedirect("usuarioeditar.jsp");
 
 	}
@@ -115,7 +110,7 @@ public class UsuarioServlet extends HttpServlet {
 				userToEdit.setContrasenia(password);
 			} else {
 				System.err.println("Error al cambiar la contraseña. No coinciden. ");
-				response.sendRedirect("index.jsp");
+				response.sendRedirect("index.jsp"); // TODO status code y redireccion
 				return;
 			}
 		}
@@ -123,6 +118,7 @@ public class UsuarioServlet extends HttpServlet {
 		userToEdit.setRol(rol);
 
 		controller.updateUser(userToEdit);
+		response.setStatus(HttpServletResponse.SC_OK); // TODO ver estandares
 		response.sendRedirect("usuario");
 
 	}
