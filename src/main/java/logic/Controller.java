@@ -11,6 +11,7 @@ import DTO.UsuarioDTO;
 import model.Horario;
 import model.Odontologo;
 import model.Paciente;
+import model.Responsable;
 import model.Turno;
 import model.Usuario;
 import persistence.PersistenceController;
@@ -47,7 +48,7 @@ public class Controller {
 	}
 
 	public List<UsuarioDTO> getAllUsers() {
-		return persistenceController.getAllUsers();
+		return persistenceController.findAllUsers();
 	}
 
 	public void updateUser(Usuario userToEdit) {
@@ -88,7 +89,7 @@ public class Controller {
 
 	public List<OdontoDTO> getAllOdonto() {
 		List<OdontoDTO> allOdonto = new ArrayList<>();
-		for (Odontologo odontologo : persistenceController.getAllOdonto()) {
+		for (Odontologo odontologo : persistenceController.findAllOdonto()) {
 			allOdonto.add(new OdontoDTO(odontologo));
 		}
 		return allOdonto;
@@ -135,19 +136,36 @@ public class Controller {
 
 	// Paciente
 
-	public void createPaciente() {
+	public void createPaciente(String dni, String nombre, String apellido, String telefono, String direccion,
+			LocalDate fecha_nac, boolean tiene_os, String tipo_sangre, Responsable responsable) {
+		Paciente paciente = new Paciente();
+		paciente.setNombre(nombre);
+		paciente.setApellido(apellido);
+		paciente.setDireccion(direccion);
+		paciente.setDni(dni);
+		paciente.setTelefono(telefono);
+		paciente.setFecha_nac(fecha_nac);
+		paciente.setResponsable(responsable);
+		paciente.setTiene_os(tiene_os);
+		paciente.setTipo_sangre(tipo_sangre);
+		persistenceController.createPaciente(paciente);
 	}
 
-	public void getPacienteByID() {
+	public Paciente getPacienteByID(int pacienteId) {
+		return persistenceController.findPacienteById(pacienteId);
 	}
 
-	public void getAllPaciente() {
+	public List<Paciente> getAllPaciente() {
+		return persistenceController.findAllPacientes();
 	}
 
-	public void updatePaciente() {
+	public void updatePaciente(Paciente paciente) {
+		persistenceController.updatePaciente(paciente);
 	}
 
-	public void deletePaciente() {
+	public void deletePaciente(int pacienteId) {
+		persistenceController.deletePaciente(pacienteId);
+
 	}
 
 	// Turno -> Odontologo, Paciente
@@ -176,11 +194,11 @@ public class Controller {
 
 	// getTurnos
 	public List<Turno> getTurnoByOdontoId(int odontoId) {
-		return persistenceController.getTurnosByOdontoId(odontoId);
+		return persistenceController.findTurnosByOdontoId(odontoId);
 	}
 
 	public List<Turno> getTurnosByPacienteId(int pacienteId) {
-		return persistenceController.getTurnosPaciente(pacienteId);
+		return persistenceController.findTurnosByPacienteId(pacienteId);
 	}
 
 	// getTurnoByIdOdontologo
@@ -206,7 +224,7 @@ public class Controller {
 
 	// deleteTurno
 	public void deleteTurno(int i) throws Exception {
-		persistenceController.cancelarTurno(i);
+		persistenceController.deleteTurno(i);
 		// TODO verificar que los turnos sean eliminados en paciente y odonto
 	}
 

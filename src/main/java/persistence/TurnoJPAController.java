@@ -7,8 +7,6 @@ import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import model.Odontologo;
-import model.Paciente;
 import model.Turno;
 
 class TurnoJPAController {
@@ -139,6 +137,16 @@ class TurnoJPAController {
 		}
 	}
 
+	public List<Turno> findByOdonto(int odontoId) {
+		EntityManager em = emf.createEntityManager();
+		try {
+			return em.createQuery("SELECT t FROM Turno t WHERE t.odontoRel.id_persona = :odontoId", Turno.class)
+					.setParameter("odontoId", odontoId).getResultList();
+		} finally {
+			em.close();
+		}
+	}
+
 	public boolean isTurnoAvailable(LocalDate fecha, String hora, int odontologoId) {
 		EntityManager em = emf.createEntityManager();
 		try {
@@ -151,41 +159,6 @@ class TurnoJPAController {
 		} finally {
 			em.close();
 		}
-	}
-
-	public void cancelTurno(int turnoId) throws Exception {
-		EntityManager em = emf.createEntityManager();
-		try {
-			em.getTransaction().begin();
-			Turno turno = em.find(Turno.class, turnoId);
-			if (turno == null) {
-				throw new Exception("Turno no encontrado");
-			}
-
-			// Eliminar referencias bidireccionales
-			Odontologo odontologo = turno.getOdontoRel();
-			Paciente paciente = turno.getPacieRel();
-
-			if (odontologo != null) {
-				odontologo.getTurnos().remove(turno);
-			}
-			if (paciente != null) {
-				paciente.getTurnos().remove(turno);
-			}
-
-			em.remove(turno);
-			em.getTransaction().commit();
-		} catch (Exception ex) {
-			if (em != null && em.getTransaction().isActive()) {
-				em.getTransaction().rollback();
-			}
-			throw ex;
-		} finally {
-			if (em != null) {
-				em.close();
-			}
-		}
-
 	}
 
 }
