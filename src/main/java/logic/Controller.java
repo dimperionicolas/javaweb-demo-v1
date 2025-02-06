@@ -78,7 +78,6 @@ public class Controller {
 	public void createOdontologo(String dni, String nombre, String apellido, String telefono, String direccion,
 			String especialidad, String fechanac, String hora_inicio, String hora_fin) {
 		isValidOdontologo(dni, nombre, apellido, telefono, direccion, especialidad, fechanac, hora_inicio, hora_fin);
-		// TODO si no es valido deberia salir con el error
 		Odontologo odontologo = makeOdontologo(dni, nombre, apellido, telefono, direccion, especialidad, fechanac,
 				hora_inicio, hora_fin);
 		persistenceController.createOdontologo(odontologo);
@@ -120,7 +119,7 @@ public class Controller {
 		odontologo.setDireccion(direccion);
 		odontologo.setEspecialidad(especialidad);
 		odontologo.setTelefono(telefono);
-		odontologo.setFecha_nac(getStringDateToDate(fechanac)); // Convierto fecha con metodo estatico
+		odontologo.setFecha_nac(LocalDate.parse(fechanac));
 		odontologo.setHorario(new Horario(hora_inicio, hora_fin));
 		return odontologo;
 	}
@@ -171,27 +170,6 @@ public class Controller {
 
 	// Turno -> Odontologo, Paciente
 	// Create
-//	public void agendarTurno(LocalDate fecha, String hora, String motivo, int odontologoId, int pacienteId)
-//			throws Exception {
-//		Odontologo odontologo = persistenceController.findOdontoById(odontologoId);
-//		Paciente paciente = persistenceController.findPacienteById(pacienteId);
-//
-//		if (odontologo == null) {
-//			throw new Exception("Odontólogo no encontrado");
-//		}
-//		if (paciente == null) {
-//			throw new Exception("Paciente no encontrado");
-//		}
-//
-//		Turno turno = new Turno();
-//		turno.setFechaTurno(fecha);
-//		turno.setHoraTurno(hora);
-//		turno.setMotivoConsulta(motivo);
-//		turno.setOdontoRel(odontologo);
-//		turno.setPacieRel(paciente);
-//
-//		persistenceController.createTurno(turno);
-//	}
 
 	public void agendarTurno(OdontoDTO odont, TurnoDTO turnoDTO, PacienteDTO paci) throws Exception {
 		Odontologo odontologo;
@@ -239,20 +217,23 @@ public class Controller {
 		List<TurnoDTO> listaFinalTurnos = new ArrayList<>();
 		int intId = Integer.parseInt(odontoId);
 		Odontologo odonto = persistenceController.findOdontoById(intId);
-		LocalDate localDate = LocalDate.parse(fecha);
-		List<Turno> turnosOdonto = persistenceController.getTurnosOdontologo(odonto, localDate);
-		for (int i = 8; i < 21; i++) {
-			listaFinalTurnos.add(new TurnoDTO("bloqueado", String.valueOf(i), fecha));
-		}
-		for (TurnoDTO turnoDTO : listaFinalTurnos) {
-			for (Turno turnoOdonto : turnosOdonto) {
-				if (turnoDTO.getHoraTurno().equals(turnoOdonto.getHoraTurno())) {
-					turnoDTO = new TurnoDTO(turnoOdonto);
+		int horaIni = Integer.parseInt(odonto.getHorario().getHorario_inicio());
+		int horaFin = Integer.parseInt(odonto.getHorario().getHorario_fin());
+		List<Turno> turnosOdonto = persistenceController.getTurnosOdontologo(odonto, LocalDate.parse(fecha));
+
+		for (int i = 8; i < 22; i++) {
+			String estado = "bloqueado";
+			if (i >= horaIni && i < horaFin) {
+				estado = "disponible";
+				for (Turno turnoOdonto : turnosOdonto) {
+					if (turnoOdonto.getHoraTurno().equals(String.valueOf(i))) {
+						estado = "ocupado";
+					}
 				}
 			}
+			listaFinalTurnos.add(new TurnoDTO(estado, String.valueOf(i), fecha));
 		}
 		return listaFinalTurnos;
-		// TODO devolver correctamene turnos disponibles
 	}
 
 	public boolean validateDisponibilidadTurno(String fecha, String horario, String estado, String turnoId,
@@ -265,36 +246,26 @@ public class Controller {
 
 	public SimpleEntry<OdontoDTO, TurnoDTO> prepareOdontologoAndTurno(String fecha, String horario, String estado,
 			String turnoId, String odontoId) {
-		LocalDate localDate = LocalDate.parse(fecha);
 		int odontoIdInt = Integer.parseInt(odontoId);
-
 		OdontoDTO odonto = new OdontoDTO(persistenceController.findOdontoById(odontoIdInt));
 		TurnoDTO turno = new TurnoDTO();
-		turno.setEstado("disponible"); // TODO el estado debe cambiar cuando este el paciente?
+		turno.setEstado("disponible");
 		turno.setFechaTurno(fecha);
 		turno.setHoraTurno(horario);
-		turno.setOdonto(odonto); // TODO todavia no se relaciona el odonto con el turno
-		SimpleEntry<OdontoDTO, TurnoDTO> entry = new SimpleEntry<>(odonto, turno);
-		return entry;
+		turno.setOdonto(odonto);
+		return new SimpleEntry<>(odonto, turno);
 	}
 
 	// deleteTurno
 	public void deleteTurno(int i) throws Exception {
 		persistenceController.deleteTurno(i);
-		// TODO verificar que los turnos sean eliminados en paciente y odonto
+		// TODO v2 verificar que los turnos sean eliminados en paciente y odonto
 	}
 
 	// Statics TODO Utils V2
 	public static String getDateToStringDate(LocalDate localDate) {
-		// TODO v2 DateUtils
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return localDate.format(formatter);
-	}
-
-	public static LocalDate getStringDateToDate(String date) {
-		// TODO v2 DateUtils
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		return LocalDate.parse(date, formatter);
 	}
 
 }

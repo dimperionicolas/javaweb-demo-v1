@@ -157,7 +157,7 @@ public class PersistenceController {
 		turnJPA.delete(turnoId);
 
 		// Eliminar referencias bidireccionales
-		// TODO verificar si JPA se encarga de esto o no.
+		// TODO v2 verificar si JPA se encarga de esto o no.
 		if (odontologo != null) {
 			odontologo.getTurnos().remove(turno);
 		}

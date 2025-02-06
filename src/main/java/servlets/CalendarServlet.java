@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import DTO.OdontoDTO;
@@ -27,7 +26,6 @@ public class CalendarServlet extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		PrintWriter out = response.getWriter();
 
 		String method = request.getParameter("_method");
 
@@ -86,7 +84,7 @@ public class CalendarServlet extends HttpServlet {
 					dispatcher.forward(request, response);
 				}
 			} catch (Exception e) {
-				out.println("{\"success\":false,\"message\":\"" + e.getMessage() + "\"}");
+				response.getWriter().println("{\"success\":false,\"message\":\"" + e.getMessage() + "\"}");
 			}
 
 		}
