@@ -101,4 +101,14 @@ class PacienteJPAController {
 			em.close();
 		}
 	}
+
+	public List<Paciente> findByName(String name) {
+		EntityManager em = emf.createEntityManager();
+		try {
+			return em.createQuery("SELECT p FROM Paciente p WHERE p.nombre = :nombre", Paciente.class)
+					.setParameter("nombre", name).getResultList();
+		} finally {
+			em.close();
+		}
+	}
 }

@@ -52,10 +52,10 @@ $(document).ready(function() {
 });
 
 // Función para cargar turnos desde el servidor
-function cargarTurnos(odontologo, fecha ) {
-	if(fecha == null)
+function cargarTurnos(odontologo, fecha) {
+	if (fecha == null)
 		fecha = new Date().toISOString().split('T')[0];
-	
+
 	$.ajax({
 		url: 'calendar', // La URL de tu servlet
 		method: 'GET',
@@ -72,7 +72,8 @@ function cargarTurnos(odontologo, fecha ) {
                     <a href="#" style="font-size: 0.85rem" class="list-group-item list-group-item-action time-slot ${turno.estado}" 
                        data-state="${turno.estado}" 
                        data-hour="${turno.hora}"
-                       data-id="${turno.id}">
+                       data-id="${turno.id}"
+					   onclick="modificarTurno(${odontologo},${turno.id}, '${turno.estado}', ${turno.hora})">
                         ${turno.hora} - ${turno.estado}
                     </a>
                 `;
@@ -86,44 +87,45 @@ function cargarTurnos(odontologo, fecha ) {
 	});
 }
 
-//function cargarTurnos(odontologoId) { //no
-//	// Actualizar texto del botón
-//	$('#odontologos').text($(`[data-id="${odontologoId}"]`).text());
-//
-//	// Cargar turnos para el odontólogo seleccionado
-//	$.ajax({
-//		url: 'calendar',
-//		method: 'GET',
-//		data: {
-//			odontologo: odontologoId,
-//			fecha: new Date().toISOString().split('T')[0] // Fecha actual
-//		},
-//		dataType: 'json',
-//		success: function(turnos) {
-//			const listaFranjas = $('#timeSlots');
-//			listaFranjas.empty();
-//
-//			turnos.forEach(function(turno) {
-//				listaFranjas.append(`
-//                    <a href="#" class="list-group-item list-group-item-action time-slot ${turno.estado}" 
-//                       data-state="${turno.estado}" 
-//                       data-hour="${turno.hora}"
-//                       data-id="${turno.id}">
-//                        ${turno.hora} - ${turno.estado}
-//                    </a>
-//                `);
-//			});
-//		},
-//		error: function() {
-//			$('#timeSlots').html('<p>Error al cargar turnos</p>');
-//		}
-//	});
-//}
-
+function modificarTurno(odonotoid, turnoid, estado, hora) {
+	fecha = $('#calendar').datepicker('getDate');
+	if (fecha != null) {
+		fecha = fecha.toISOString().split('T')[0];
+	} else {
+		fecha = new Date().toISOString().split('T')[0];
+	}
+	$.ajax({
+		url: 'calendar',
+		method: 'GET',
+		data: {
+			_method: 'prepare',
+			odonotoid: odonotoid,
+			fecha: fecha,
+			turnoid: turnoid,
+			estado: estado,
+			hora: hora
+		},
+		dataType: 'json',
+		success: function(response) {
+			console.log(response);
+			if (response.success) {
+				// Redirección exitosa
+				window.location.href = response.redirectUrl || 'turnoalta.jsp';
+			} else {
+				// Mostrar mensaje de error
+				alert(response.message || 'Error al modificar el turno');
+			}
+		},
+		error: function(xhr, status, error) {
+			console.error("Error al cargar turnos:", error);
+			alert('Error en la comunicación con el servidor');
+		}
+	});
+}
 
 // Función auxiliar para determinar siguiente estado
 function siguienteEstado(estadoActual) {
-	const estados = ['disponible', 'ocupado', 'fueradehorario'];
+	const estados = ['disponible', 'ocupado', 'bloqueado'];
 	const indiceActual = estados.indexOf(estadoActual);
 	return estados[(indiceActual + 1) % estados.length];
 }

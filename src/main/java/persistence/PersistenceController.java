@@ -105,6 +105,10 @@ public class PersistenceController {
 		return paciJPA.findById(pacienteId);
 	}
 
+	public List<Paciente> findPacienteByName(String name) {
+		return paciJPA.findByName(name);
+	}
+
 	public List<Paciente> findAllPacientes() {
 		return paciJPA.findAll();
 	}
@@ -124,7 +128,7 @@ public class PersistenceController {
 	//
 	// Turnos
 	public void createTurno(Turno turno) throws Exception {
-		if (!turnJPA.isTurnoAvailable(turno.getFechaTurno(), turno.getHoraTurno(), turno.getOdontoRel().getId())) {
+		if (!turnJPA.isTurnoAvailable(turno.getFechaTurno(), turno.getHoraTurno(), turno.getOdontoRel())) {
 			throw new Exception("El turno ya está ocupado para ese horario y odontólogo");
 		}
 		turnJPA.create(turno);
@@ -134,16 +138,16 @@ public class PersistenceController {
 		return turnJPA.findById(turnoId);
 	}
 
-	public List<Turno> findTurnosByPacienteId(int pacienteId) {
-		return turnJPA.findByPaciente(pacienteId);
+	public List<Turno> findTurnosByPacienteId(Paciente pac) {
+		return turnJPA.findByPaciente(pac);
 	}
 
-	public List<Turno> findTurnosByOdontoId(int odontoId) {
-		return turnJPA.findByOdonto(odontoId);
+	public List<Turno> findTurnosByOdontoId(Odontologo odonto) {
+		return turnJPA.findByOdonto(odonto);
 	}
 
-	public List<Turno> getTurnosOdontologo(String id_odonto, String fecha) {
-		return odonJPA.getTurnosByOdontologo(id_odonto, LocalDate.parse(fecha));
+	public List<Turno> getTurnosOdontologo(Odontologo odonto, LocalDate fecha) {
+		return turnJPA.getTurnosByOdontologoAndDate(odonto, fecha);
 	}
 
 	public void deleteTurno(int turnoId) throws Exception {
@@ -162,8 +166,8 @@ public class PersistenceController {
 		}
 	}
 
-	public boolean verificarDisponibilidadTurno(LocalDate fecha, String hora, int odontologoId) {
-		return turnJPA.isTurnoAvailable(fecha, hora, odontologoId);
+	public boolean verificarDisponibilidadTurno(LocalDate fecha, String hora, Odontologo odonto) {
+		return turnJPA.isTurnoAvailable(fecha, hora, odonto);
 	}
 
 }

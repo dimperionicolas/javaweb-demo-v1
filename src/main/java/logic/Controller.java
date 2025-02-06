@@ -2,10 +2,12 @@ package logic;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
 
 import DTO.OdontoDTO;
+import DTO.PacienteDTO;
 import DTO.TurnoDTO;
 import DTO.UsuarioDTO;
 import model.Horario;
@@ -135,7 +137,6 @@ public class Controller {
 	}
 
 	// Paciente
-
 	public void createPaciente(String dni, String nombre, String apellido, String telefono, String direccion,
 			LocalDate fecha_nac, boolean tiene_os, String tipo_sangre, Responsable responsable) {
 		Paciente paciente = new Paciente();
@@ -170,10 +171,44 @@ public class Controller {
 
 	// Turno -> Odontologo, Paciente
 	// Create
-	public void agendarTurno(LocalDate fecha, String hora, String motivo, int odontologoId, int pacienteId)
-			throws Exception {
-		Odontologo odontologo = persistenceController.findOdontoById(odontologoId);
-		Paciente paciente = persistenceController.findPacienteById(pacienteId);
+//	public void agendarTurno(LocalDate fecha, String hora, String motivo, int odontologoId, int pacienteId)
+//			throws Exception {
+//		Odontologo odontologo = persistenceController.findOdontoById(odontologoId);
+//		Paciente paciente = persistenceController.findPacienteById(pacienteId);
+//
+//		if (odontologo == null) {
+//			throw new Exception("Odontólogo no encontrado");
+//		}
+//		if (paciente == null) {
+//			throw new Exception("Paciente no encontrado");
+//		}
+//
+//		Turno turno = new Turno();
+//		turno.setFechaTurno(fecha);
+//		turno.setHoraTurno(hora);
+//		turno.setMotivoConsulta(motivo);
+//		turno.setOdontoRel(odontologo);
+//		turno.setPacieRel(paciente);
+//
+//		persistenceController.createTurno(turno);
+//	}
+
+	public void agendarTurno(OdontoDTO odont, TurnoDTO turnoDTO, PacienteDTO paci) throws Exception {
+		Odontologo odontologo;
+		Paciente paciente;
+		try {
+			odontologo = persistenceController.findOdontoById(Integer.parseInt(odont.getId()));
+			if (paci.getId() != null) {
+				paciente = persistenceController.findPacienteById(Integer.parseInt(paci.getId()));
+				// El paciente ya existe
+			} else {
+				paciente = paci.getPaciente();
+				persistenceController.createPaciente(paciente);
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return;
+		}
 
 		if (odontologo == null) {
 			throw new Exception("Odontólogo no encontrado");
@@ -182,31 +217,32 @@ public class Controller {
 			throw new Exception("Paciente no encontrado");
 		}
 
-		Turno turno = new Turno();
-		turno.setFechaTurno(fecha);
-		turno.setHoraTurno(hora);
-		turno.setMotivoConsulta(motivo);
+		Turno turno = turnoDTO.getTurno();
 		turno.setOdontoRel(odontologo);
 		turno.setPacieRel(paciente);
-
 		persistenceController.createTurno(turno);
 	}
 
 	// getTurnos
 	public List<Turno> getTurnoByOdontoId(int odontoId) {
-		return persistenceController.findTurnosByOdontoId(odontoId);
+		Odontologo odonto = persistenceController.findOdontoById(odontoId);
+		return persistenceController.findTurnosByOdontoId(odonto);
 	}
 
 	public List<Turno> getTurnosByPacienteId(int pacienteId) {
-		return persistenceController.findTurnosByPacienteId(pacienteId);
+		Paciente paci = persistenceController.findPacienteById(pacienteId);
+		return persistenceController.findTurnosByPacienteId(paci);
 	}
 
 	// getTurnoByIdOdontologo
 	public List<TurnoDTO> getTurnoByOdontoIdAndDate(String odontoId, String fecha) {
 		List<TurnoDTO> listaFinalTurnos = new ArrayList<>();
-		List<Turno> turnosOdonto = persistenceController.getTurnosOdontologo(odontoId, fecha);
+		int intId = Integer.parseInt(odontoId);
+		Odontologo odonto = persistenceController.findOdontoById(intId);
+		LocalDate localDate = LocalDate.parse(fecha);
+		List<Turno> turnosOdonto = persistenceController.getTurnosOdontologo(odonto, localDate);
 		for (int i = 8; i < 21; i++) {
-			listaFinalTurnos.add(new TurnoDTO("Fuera de horario", String.valueOf(i), fecha));
+			listaFinalTurnos.add(new TurnoDTO("bloqueado", String.valueOf(i), fecha));
 		}
 		for (TurnoDTO turnoDTO : listaFinalTurnos) {
 			for (Turno turnoOdonto : turnosOdonto) {
@@ -216,10 +252,30 @@ public class Controller {
 			}
 		}
 		return listaFinalTurnos;
+		// TODO devolver correctamene turnos disponibles
 	}
 
-	public boolean validateDisponibilidadTurno(LocalDate fecha, String horario, int odontoId) {
-		return persistenceController.verificarDisponibilidadTurno(fecha, horario, odontoId);
+	public boolean validateDisponibilidadTurno(String fecha, String horario, String estado, String turnoId,
+			String odontoId) {
+		LocalDate localDate = LocalDate.parse(fecha);
+		int odontoIdInt = Integer.parseInt(odontoId);
+		Odontologo odonto = persistenceController.findOdontoById(odontoIdInt);
+		return persistenceController.verificarDisponibilidadTurno(localDate, horario, odonto);
+	}
+
+	public SimpleEntry<OdontoDTO, TurnoDTO> prepareOdontologoAndTurno(String fecha, String horario, String estado,
+			String turnoId, String odontoId) {
+		LocalDate localDate = LocalDate.parse(fecha);
+		int odontoIdInt = Integer.parseInt(odontoId);
+
+		OdontoDTO odonto = new OdontoDTO(persistenceController.findOdontoById(odontoIdInt));
+		TurnoDTO turno = new TurnoDTO();
+		turno.setEstado("disponible"); // TODO el estado debe cambiar cuando este el paciente?
+		turno.setFechaTurno(fecha);
+		turno.setHoraTurno(horario);
+		turno.setOdonto(odonto); // TODO todavia no se relaciona el odonto con el turno
+		SimpleEntry<OdontoDTO, TurnoDTO> entry = new SimpleEntry<>(odonto, turno);
+		return entry;
 	}
 
 	// deleteTurno

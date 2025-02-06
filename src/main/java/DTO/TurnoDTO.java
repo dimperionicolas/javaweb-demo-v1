@@ -1,5 +1,7 @@
 package DTO;
 
+import java.time.LocalDate;
+
 import logic.Controller;
 import model.Paciente;
 import model.Turno;
@@ -92,6 +94,15 @@ public class TurnoDTO {
 
 	public void setMotivo(String motivo) {
 		this.motivo = motivo;
+	}
+
+	public Turno getTurno() {
+		Turno turno = new Turno();
+		turno.setId_turno(id_turno);
+		turno.setFechaTurno(LocalDate.parse(fechaTurno));
+		turno.setHoraTurno(horaTurno);
+		turno.setMotivoConsulta(motivo);
+		return turno;
 	}
 
 }

@@ -2,5 +2,5 @@
 /* Personalización adicional */
  .time-slot.disponible { background-color: #d4edda; } 
  .time-slot.ocupado { background-color: #f8d7da; } 
- .time-slot.pendiente { background-color: #fff3cd; } 
+ .time-slot.bloqueado { background-color: #fff3cd; } 
  #calendar { height: 400px; } /* Altura fija para el calendario */ 

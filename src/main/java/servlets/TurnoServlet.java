@@ -1,8 +1,11 @@
 package servlets;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.util.AbstractMap.SimpleEntry;
 
+import DTO.OdontoDTO;
+import DTO.PacienteDTO;
+import DTO.TurnoDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,22 +25,81 @@ public class TurnoServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		boolean disponible = controller.validateDisponibilidadTurno(LocalDate.now().plusDays(1), "14:00", 1);
+
+		String odontoId = request.getParameter("odonotoid");
+		String turnoId = request.getParameter("turnoid");
+		String estado = request.getParameter("estado");
+		String hora = request.getParameter("hora");
+		String fecha = request.getParameter("fecha");
+
+		SimpleEntry<OdontoDTO, TurnoDTO> odontologoAndTurno = controller.prepareOdontologoAndTurno(fecha, hora, estado,
+				turnoId, odontoId);
+		OdontoDTO odonto = odontologoAndTurno.getKey();
+		TurnoDTO turno = odontologoAndTurno.getValue();
+		request.getSession().setAttribute("odonto", odonto);
+		request.getSession().setAttribute("turno", turno);
+
+		response.getWriter().write("{\"success\":true,\"redirectUrl\":\"turnoalta.jsp\"}");
 
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			LocalDate fecha = LocalDate.now().plusDays(1);
-			String hora = "14:00";
-			String motivo = "Consulta general";
-			int odontologoId = 1;
-			int pacienteId = 1;
 
-			controller.agendarTurno(fecha, hora, motivo, odontologoId, pacienteId);
+			Object odontoObj = request.getSession().getAttribute("odonto");
+			OdontoDTO odont;
+			if (odontoObj != null && odontoObj instanceof OdontoDTO) {
+				odont = (OdontoDTO) odontoObj;
+			} else {
+				response.sendRedirect("index.jsp");
+				return;
+			}
+			TurnoDTO turno;
+			Object turnoObj = request.getSession().getAttribute("turno");
+			if (turnoObj != null && turnoObj instanceof TurnoDTO) {
+				turno = (TurnoDTO) turnoObj;
+			} else {
+				response.sendRedirect("index.jsp");
+				return;
+			}
+
+			PacienteDTO paci = new PacienteDTO();
+			String dni = request.getParameter("dni");
+			paci.setDni(dni);
+			String nombre = request.getParameter("nombre");
+			paci.setNombre(nombre);
+			String apellido = request.getParameter("apellido");
+			paci.setApellido(apellido);
+			String telefono = request.getParameter("telefono");
+			paci.setTelefono(telefono);
+			String direccion = request.getParameter("direccion");
+			paci.setDireccion(direccion);
+			String fechanac = request.getParameter("fechanac");
+			paci.setFechanac(fechanac);
+			String tieneos = request.getParameter("tieneos");// si no
+			paci.setTiene_os(false);
+			String horario = request.getParameter("horario");
+			turno.setHoraTurno(horario);
+
+			if (tieneos.equals("true")) {
+				paci.setTiene_os(true);
+			}
+			String tiposangre = request.getParameter("tiposangre");
+			paci.setTipo_sangre(tiposangre);
+			// String responsable = request.getParameter("responsable"); // null
+			// paci.setResponsable(new Responsable());
+
+			String motivoconsulta = request.getParameter("motivoconsulta");
+			turno.setMotivo(motivoconsulta);
+
+			controller.agendarTurno(odont, turno, paci);
+
+			System.out.println();
+
+//			controller.agendarTurno(fecha, hora, motivo, odontologoId, pacienteId);
 		} catch (Exception e) {
-			// Manejar el error (turno no disponible, entidades no encontradas, etc.)
+			System.err.println(e.getMessage());
 		}
 	}
 

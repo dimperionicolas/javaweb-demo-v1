@@ -1,12 +1,14 @@
 package persistence;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
+import model.Odontologo;
+import model.Paciente;
 import model.Turno;
 
 class TurnoJPAController {
@@ -94,7 +96,7 @@ class TurnoJPAController {
 		}
 	}
 
-	public List<Turno> findByFecha(Date fecha) {
+	public List<Turno> findByFecha(LocalDate fecha) {
 		EntityManager em = emf.createEntityManager();
 		try {
 			return em.createQuery("SELECT t FROM Turno t WHERE t.fechaTurno = :fecha", Turno.class)
@@ -114,46 +116,57 @@ class TurnoJPAController {
 		}
 	}
 
-	public List<Turno> findByOdontologoAndFecha(String id_odonto, LocalDate fecha) {
+	public List<Turno> findByOdontologoAndFecha(Odontologo odonto, LocalDate fecha) {
 		EntityManager em = emf.createEntityManager();
 		try {
 			return em
-					.createQuery("SELECT t FROM Turno t WHERE t.odontoRel.id_persona = :id_odonto "
+					.createQuery("SELECT t FROM Turno t WHERE t.odontoRel = :odonto "
 							+ "AND t.fechaTurno = :fecha", Turno.class)
-					.setParameter("id_odonto", Integer.parseInt(id_odonto)).setParameter("fecha", fecha)
-					.getResultList();
+					.setParameter("odonto", odonto).setParameter("fecha", fecha).getResultList();
 		} finally {
 			em.close();
 		}
 	}
 
-	public List<Turno> findByPaciente(int pacienteId) {
+	public List<Turno> findByPaciente(Paciente paci) {
 		EntityManager em = emf.createEntityManager();
 		try {
-			return em.createQuery("SELECT t FROM Turno t WHERE t.pacieRel.id_persona = :pacienteId", Turno.class)
-					.setParameter("pacienteId", pacienteId).getResultList();
+			return em.createQuery("SELECT t FROM Turno t WHERE t.pacieRel = :paci", Turno.class)
+					.setParameter("paci", paci).getResultList();
 		} finally {
 			em.close();
 		}
 	}
 
-	public List<Turno> findByOdonto(int odontoId) {
+	public List<Turno> findByOdonto(Odontologo odonto) {
 		EntityManager em = emf.createEntityManager();
 		try {
-			return em.createQuery("SELECT t FROM Turno t WHERE t.odontoRel.id_persona = :odontoId", Turno.class)
-					.setParameter("odontoId", odontoId).getResultList();
+			return em.createQuery("SELECT t FROM Turno t WHERE t.odontoRel = :odonto", Turno.class)
+					.setParameter("odonto", odonto).getResultList();
 		} finally {
 			em.close();
 		}
 	}
 
-	public boolean isTurnoAvailable(LocalDate fecha, String hora, int odontologoId) {
+	public List<Turno> getTurnosByOdontologoAndDate(Odontologo odonto, LocalDate fecha) {
+		EntityManager em = emf.createEntityManager();
+		try {
+			TypedQuery<Turno> query = em.createQuery(
+					"SELECT t FROM Turno t WHERE t.odontoRel = :odonto " + "AND t.fechaTurno = :fecha", Turno.class);
+			TypedQuery<Turno> setParameter = query.setParameter("odonto", odonto).setParameter("fecha", fecha);
+			return setParameter.getResultList();
+		} finally {
+			em.close();
+		}
+	}
+
+	public boolean isTurnoAvailable(LocalDate fecha, String hora, Odontologo odonto) {
 		EntityManager em = emf.createEntityManager();
 		try {
 			List<Turno> turnos = em
-					.createQuery("SELECT t FROM Turno t WHERE t.odontoRel.id_persona = :odontologoId "
+					.createQuery("SELECT t FROM Turno t WHERE t.odontoRel= :odonto "
 							+ "AND t.fechaTurno = :fecha AND t.horaTurno = :hora", Turno.class)
-					.setParameter("odontologoId", odontologoId).setParameter("fecha", fecha).setParameter("hora", hora)
+					.setParameter("odonto", odonto).setParameter("fecha", fecha).setParameter("hora", hora)
 					.getResultList();
 			return turnos.isEmpty();
 		} finally {

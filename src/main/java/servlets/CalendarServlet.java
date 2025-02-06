@@ -1,11 +1,12 @@
 package servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.List;
 
 import DTO.OdontoDTO;
 import DTO.TurnoDTO;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -26,23 +27,12 @@ public class CalendarServlet extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		String odontoId = request.getParameter("odontologo");
-		String fecha = request.getParameter("fecha");
+		PrintWriter out = response.getWriter();
+
 		String method = request.getParameter("_method");
 
 		if ("combo".equals(method)) {
-			response.setContentType("application/json");
-			List<OdontoDTO> list = new ArrayList<>();
-			OdontoDTO odontologo = new OdontoDTO();
-			odontologo.setId("5");
-			odontologo.setNombre("Nicolas");
-			odontologo.setApellido("Dimperio");
-			list.add(odontologo);
-			OdontoDTO od = new OdontoDTO();
-			od.setId("6");
-			od.setNombre("roberto");
-			od.setApellido("sarasa");
-			list.add(od);
+			List<OdontoDTO> list = controller.getAllOdonto();
 
 			StringBuilder json = new StringBuilder("[");
 			for (OdontoDTO odonto : list) {
@@ -59,6 +49,8 @@ public class CalendarServlet extends HttpServlet {
 			response.getWriter().write(json.toString());
 
 		} else if ("lista".equals(method)) {
+			String fecha = request.getParameter("fecha");
+			String odontoId = request.getParameter("odontologo");
 			// Lógica para obtener los turnos
 			List<TurnoDTO> turnos = controller.getTurnoByOdontoIdAndDate(odontoId, fecha);
 
@@ -67,7 +59,7 @@ public class CalendarServlet extends HttpServlet {
 			for (TurnoDTO turno : turnos) {
 				json.append("{").append("\"hora\":\"").append(turno.getHoraTurno()).append("\",")
 						.append("\"estado\":\"").append(turno.getEstado()).append("\",").append("\"id\":\"")
-						.append(turno.getEstado()).append("\"").append("},");
+						.append(turno.getId_turno()).append("\"").append("},");
 			}
 			// Eliminar última coma y cerrar array
 			if (json.charAt(json.length() - 1) == ',') {
@@ -77,11 +69,31 @@ public class CalendarServlet extends HttpServlet {
 
 			response.setContentType("application/json");
 			response.getWriter().write(json.toString());
-		}
+		} else if ("prepare".equals(method)) {
+			try {
+				// Procesar la solicitud
+				String odontoId = request.getParameter("odonotoid");
+				String turnoId = request.getParameter("turnoid");
+				String estado = request.getParameter("estado");
+				String hora = request.getParameter("hora");
+				String fecha = request.getParameter("fecha");
 
+				boolean validateDisponibilidadTurno = controller.validateDisponibilidadTurno(fecha, hora, estado,
+						turnoId, odontoId);
+
+				if (validateDisponibilidadTurno) {
+					RequestDispatcher dispatcher = request.getRequestDispatcher("turnos");
+					dispatcher.forward(request, response);
+				}
+			} catch (Exception e) {
+				out.println("{\"success\":false,\"message\":\"" + e.getMessage() + "\"}");
+			}
+
+		}
+		// TODO _method es distinto, arrojar error
 	}
 
-	// actualiza los turnos
+	// crea o actualiza los turnos
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub

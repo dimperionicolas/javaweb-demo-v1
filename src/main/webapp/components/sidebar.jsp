@@ -38,8 +38,8 @@
 			data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">Acciones:</h6>
-				<a class="collapse-item" href="odontologo">Ver odontólogos.</a>
-				<a class="collapse-item" href="odontoalta.jsp">Alta odontólogos.</a>
+				<a class="collapse-item" href="odontologo">Ver odontólogos.</a> <a
+					class="collapse-item" href="odontoalta.jsp">Alta odontólogos.</a>
 			</div>
 		</div></li>
 
@@ -75,8 +75,8 @@
 					class="collapse-item" href="usuarioalta.jsp">Alta usuario.</a>
 			</div>
 		</div></li>
-		
-		
+
+
 
 	<li class="nav-item"><a class="nav-link collapsed" href="#"
 		data-toggle="collapse" data-target="#collapseTurnos"
@@ -87,8 +87,7 @@
 			data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">Acciones:</h6>
-				<a class="collapse-item" href="calendar.jsp">Ver turnos</a> <a
-					class="collapse-item" href="odontoalta.jsp">Nuevos turnos</a>
+				<a class="collapse-item" href="calendar.jsp">Ver turnos</a>
 			</div>
 		</div></li>
 

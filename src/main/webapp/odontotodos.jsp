@@ -19,24 +19,16 @@
 			<table class="table table-bordered" id="dataTable" >
 				<thead>
 					<tr>
-						<th>DNI</th>
-						<th>Nombre</th>
-						<th>Apellido</th>
-						<th>Teléfono</th>
+						<th>Profesional</th>
 						<th>Especialidad</th>
-						<th>Fecha Nac</th>
 						<th>Horario</th>
 						<th>Accion</th>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
-						<th>DNI</th>
-						<th>Nombre</th>
-						<th>Apellido</th>
-						<th>Teléfono</th>
+						<th>Profesional</th>
 						<th>Especialidad</th>
-						<th>Fecha Nac</th>
 						<th>Horario</th>
 						<th>Accion</th>
 					</tr>
@@ -60,12 +52,8 @@
 					for (OdontoDTO odonto : odontoList) {
 					%>
 					<tr>
-						<td><%=odonto.getDni()%></td>
-						<td><%=odonto.getNombre()%></td>
-						<td><%=odonto.getApellido()%></td>
-						<td><%=odonto.getTelefono()%></td>
+						<td><%=odonto.getNombre()%> <%=odonto.getApellido()%></td>
 						<td><%=odonto.getEspecialidad()%></td>
-						<td><%=odonto.getFecha_nac()%></td>
 						<td>de <%=odonto.getHorario().getHorario_inicio()%> a <%=odonto.getHorario().getHorario_fin()%>
 
 						</td>
